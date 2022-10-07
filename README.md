@@ -1,11 +1,14 @@
 # WebProgrammingProjCs32
-## Team Name: CS326Team
 
-## Application Name: The Artchive
+Team Name: **CS326Team**
 
-## Team Overview: 
-Zhenduo Wang         github: KRISWIU
-Jacob Gray           github: PineVoid
+Application Name: **The Artchive**
+
+Team Overview: 
+
+Zhenduo Wang - **KRISWIU**
+
+Jacob Gray - **PineVoid**
 
 ## Innovative Idea: 
 Our idea is to create a website which hosts links and information on artworks of all forms and kinds, from written art to visual art to non-traditional art. This idea is inspired by sites like https://www.goodreads.com/ or https://myanimelist.net/, which serve as databases of artworks of a particular form so that users can find new art, track art they've already seen, or find art of a certain category or type. However, these sites are often oriented towards one particular type of art.
