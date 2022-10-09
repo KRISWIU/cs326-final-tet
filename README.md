@@ -28,3 +28,10 @@ There would be several important components to our site:
 **Tags**: Attached to artworks, and primarily optimized for filtering or exploration. Likely implemented as a kind of database with tag names having a list of all the artworks with that tag.
 
 **Segmenting**: Allows users to manipulate smaller parts of a work. Could be treated as another artwork in the database, but with additional properties (such as "originally from" and "positionInWork".)
+
+## Future Implementation:
+There going to have several pages in our website. 
+
+**Main page** going to have a top div, body div, and bottom div. Top is gonna contain a navigation bar which could lead user to different other pages and a link for user to sign in/up. Bottom would be some other stuff such as authorization or contact information about our website. In the main body div, our first tought is to have several divs inside body div. First one is a div that continued showing each of our top books/vedios; second one is a div in grid form which contains severl suggested books/vedios. 
+
+**Book/vedio page** going to be discreption of each book/vedio which could let user to have a deeper undertanding for each book/vedio. This will also have the same stucture as main page, a top div, body div, and bottom div. But for the body div, it will be a picture of the cover and some text information in its first div in body. Second div is gonna be other book/vedios suggested by our algorithms and showing by grid divs.
