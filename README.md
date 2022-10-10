@@ -1,4 +1,4 @@
-# WebProgrammingProjCs32
+# CS326 Final Project - tet
 
 Team Name: **tet**
 
@@ -23,11 +23,11 @@ There would be several important components to our site:
 
 **Artwork database**: Initially pulling primarily from Wikisource for poetry, but could in theory be expanded. Could store objects representing each artwork, with various properties or bits of information tied to it.
 
-**Lists**: Simple linked lists referencing items in the database, attached to users or attached to the system if created dynamically.
+**Lists**: Simple lists referencing items in the database, attached to users or attached to the system if created dynamically.
 
 **Tags**: Attached to artworks, and primarily optimized for filtering or exploration. Likely implemented as a kind of database with tag names having a list of all the artworks with that tag.
 
-**Segmenting**: Allows users to manipulate smaller parts of a work. Could be treated as another artwork in the database, but with additional properties (such as "originally from" and "positionInWork".)
+**Segmenting works**: Allows users to manipulate smaller parts of a work. Could be treated as another artwork in the database, but with additional properties (such as "originally from" and "positionInWork".)
 
 ## Future Implementation:
 There going to have several pages in our website. 
