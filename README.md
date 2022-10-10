@@ -1,6 +1,6 @@
 # WebProgrammingProjCs32
 
-Team Name: **Web Poets**
+Team Name: **tet**
 
 Application Name: **The Artchive**
 
