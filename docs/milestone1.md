@@ -1,6 +1,6 @@
 # Information About Interaction Between user and data #
 
-(We can change the detail in the Sat's meeting about detail but this is mainly what I thougn about)
+(We can change the detail in the Sat's meeting about detail but this is mainly what I thougt about)
 
 
 **Main page** going to have a top div, body div, and bottom div. Top is gonna contain a navigation bar which could lead user to different other pages and a link for user to sign in/up. Bottom would be some other stuff such as authorization or contact information about our website. In the main body div, our first tought is to have several divs inside body div. First one is a div that continued showing each of our top books/vedios; second one is a div in grid form which contains severl suggested books/vedios.
