@@ -1,0 +1,24 @@
+#topBar {
+    position: fixed;
+    height:10%;
+    width: 100%;
+}
+
+.TopBarElem {
+}
+
+#bodyDiv{
+    position: fixed;
+    height: 80%;
+    width: 80%;
+}
+
+#bottom{
+    height: 10%;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+#copyright{
+    color: blue;
+}
