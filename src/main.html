@@ -3,32 +3,30 @@
 
 <head>
     <title>The Artchive</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Don't really know too much about the details, but needs these lines to use bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 
 <body>
 
-    <!--
-        Could probably have some navigation stuff here: buttons for lists, blah blah
-     -->
-<div id="topBar">
-    <button class="TopBarElem">Lists</button>
-    <select id="'exp">
-        <option value="1" selected>Explore</option>
-        <option value="2">BookType1</option>
-        <option value="3">BookType2</option>
-        <option value="4">BookType3</option>
-    </select>
-    <button class="TopBarElem">Explore</button>
-    <button class="TopBarElem">Add</button>
+<div id="topBar" class="container-fluid row col-sm-12">
+    <h3 id="siteName" class="top-bar-elem col-sm-2">The Artchive</h3>
+    <button class="top-bar-elem btn-primary col-sm-2">Add works</button>
     <span class="TopBarElem">
         <input></input>
-        <button class="TopBarElem">Search</button>
+        <button class="TopBarElem col-sm-4">Search</button>
     </span>
-    <button id="Login">Sign in/up</button>
+    <button id="dropdownFilter" class="top-bar-elem btn-primary col-sm-1">Filter</button>
+    <button class="TopBarElem top-bar-elem btn-primary col-sm-1">Lists</button>
+    <button id="login" class="top-bar-elem btn-primary col-sm-2">Log in</button>
 </div>
+
 
 <div id="bodyDiv">
 
