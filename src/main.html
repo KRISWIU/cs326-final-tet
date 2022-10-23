@@ -22,17 +22,31 @@
         <div class="TopBarElem col-sm-1">
             <button class="TopBarElem btn-primary">Add works</button>
         </div>
+
         <!-- Search bar: definitely most complicated part -->
         <form id="searchWrapper" class="TopBarElem form-group col-sm-6 container-fluid">
             <div class="row">
                 <input id="searchBar" type="search" class="TopBarElem col-sm-11" placeholder="Search">
                 <div class="dropdown col-sm-1">
                     <button id="filterButton" class="TopBarElem btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
-                    <div id="filterMenu" class="dropdown-menu" aria-labelledby="filterDropdown">
-                        <div class="dropdown-item">Tags:</div>
-                        <div class="dropdown-item">Author/creator:</div>
-                        <div class="dropdown-item">c</div>
-                        <div class="dropdown-item">d</div>
+                    <div id="filterMenu" class="dropdown-menu container-fluid" aria-labelledby="filterDropdown">
+                        <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <h5 class="col-sm-3">Tags:</h5>
+                            <input class="col-sm-7"></input>
+                            <div class="col-sm-1"></div>
+                        </div>
+                        <!-- <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <button class="btn-light col-sm-10">Copy tags</button>
+                            <div class="col-sm-1"></div>
+                        </div> -->
+                        <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <h5 class="col-sm-3">Creator(s):</h5>
+                            <input class="col-sm-7"></input>
+                            <div class="col-sm-1"></div>
+                        </div>
                     </div>
                 </div>
             </div>
