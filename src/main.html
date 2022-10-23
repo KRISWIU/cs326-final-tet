@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -15,22 +15,22 @@
 
 <body>
 
-<div id="topBar" class="container-fluid row col-sm-12">
-    <h3 id="siteName" class="top-bar-elem col-sm-2">The Artchive</h3>
-    <button class="top-bar-elem btn-primary col-sm-2">Add works</button>
-    <span class="TopBarElem">
-        <input></input>
-        <button class="TopBarElem col-sm-4">Search</button>
-    </span>
-    <button id="dropdownFilter" class="top-bar-elem btn-primary col-sm-1">Filter</button>
-    <button class="TopBarElem top-bar-elem btn-primary col-sm-1">Lists</button>
-    <button id="login" class="top-bar-elem btn-primary col-sm-2">Log in</button>
+
+<div id="topBar" class="container-fluid fixed-top">  
+    <div class="row">
+        <h3 id="siteName" class="TopBarElem col-sm-2">The Artchive</h3>
+        <button class="TopBarElem btn-primary col-sm-1">Add works</button>
+        <form id="searchForm" class="TopBarElem form-group col-sm-6 container-fluid">
+            <div class="row">
+                <input id="search" type="search" class="TopBarElem col-sm-10" placeholder="Search">
+                <button id="dropdownFilter" class="TopBarElem btn-primary col-sm-2">Filter</button>
+            </div>
+        </form>
+        <button class="TopBarElem btn-primary col-sm-1">Lists</button>
+        <button id="login" class="TopBarElem btn-primary col-sm-2">Log in</button>
+    </div>
 </div>
 
-
-<div id="bodyDiv">
-
-</div>
 
 <div id="bottom">
     <p id="copyright">@Copyright: Zhenduo Wang, Jacob Gray, Yuxiang Nian</p>

@@ -1,15 +1,19 @@
 #topBar {
-    position: fixed;
-    height:10%;
-    width: 100%;
-    background-color: purple;
+    background-color: black;
 }
 
 .topBarElem {
 }
 
+.searchForm {
+    background-color: brown;
+}
+
+#siteName {
+    color: white;
+}
+
 #bodyDiv{
-    position: fixed;
     height: 80%;
     width: 80%;
 }
