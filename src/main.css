@@ -13,6 +13,10 @@
     color: white;
 }
 
+#filterMenu {
+    min-width: 400px;
+}
+
 #bodyDiv{
     height: 80%;
     width: 80%;

@@ -18,16 +18,31 @@
 
 <div id="topBar" class="container-fluid fixed-top">  
     <div class="row">
-        <h3 id="siteName" class="TopBarElem col-sm-2">The Artchive</h3>
-        <button class="TopBarElem btn-primary col-sm-1">Add works</button>
-        <form id="searchForm" class="TopBarElem form-group col-sm-6 container-fluid">
+        <h3 id="siteName" class="TopBarElem col-sm-2 text-center">The Artchive</h3>
+        <div class="TopBarElem col-sm-1">
+            <button class="TopBarElem btn-primary">Add works</button>
+        </div>
+        <!-- Search bar: definitely most complicated part -->
+        <form id="searchWrapper" class="TopBarElem form-group col-sm-6 container-fluid">
             <div class="row">
-                <input id="search" type="search" class="TopBarElem col-sm-10" placeholder="Search">
-                <button id="dropdownFilter" class="TopBarElem btn-primary col-sm-2">Filter</button>
+                <input id="searchBar" type="search" class="TopBarElem col-sm-11" placeholder="Search">
+                <div class="dropdown col-sm-1">
+                    <button id="filterButton" class="TopBarElem btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
+                    <div id="filterMenu" class="dropdown-menu" aria-labelledby="filterDropdown">
+                        <div class="dropdown-item">Tags:</div>
+                        <div class="dropdown-item">Author/creator:</div>
+                        <div class="dropdown-item">c</div>
+                        <div class="dropdown-item">d</div>
+                    </div>
+                </div>
             </div>
         </form>
-        <button class="TopBarElem btn-primary col-sm-1">Lists</button>
-        <button id="login" class="TopBarElem btn-primary col-sm-2">Log in</button>
+
+        <!-- End of search bar -->
+        <div class="TopBarElem col-sm-3 text-center">
+            <button id="listsButton" class="TopBarElem btn-primary">Lists</button>
+            <button id="loginProfileButton" class="TopBarElem btn-primary">Log in</button>
+        </div>
     </div>
 </div>
 
