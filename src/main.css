@@ -3,6 +3,7 @@
 }
 
 .TopBarElem {
+    
 }
 
 #siteName {
@@ -36,11 +37,20 @@
     margin: 1px;
     background-color: black;
     color: white;
-    height: 300px;
-    width: 200px;
+    height: 250px;
+    width: 300px;
 }
 
 .img-fluid {
-    height: 200px;
-    width: 100px;
+    height: 150px;
+    width: 170px;
+}
+
+#col4{
+    width: 585px;
+    height: 1000px;
+}
+#col5{
+    width: 585px;
+    height: 1000px;
 }
