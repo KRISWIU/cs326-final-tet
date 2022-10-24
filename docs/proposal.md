@@ -31,7 +31,7 @@ Our idea is to create a website which allows categorization, organization, and s
 
 # User interface
 
-**Main page**: INSERT WIREFRAME PICTURE
+**Main page**: 
 ![main_page](https://github.com/KRISWIU/cs326-final-tet/blob/218da2a103123ba250c1089233ff57a3bb7531f8/docs/imgs/mainpage.png)
 
 Our main page will be composed of a navigation bar on the top, a large "discovery" section for the center, and a small bottom portion.
@@ -45,13 +45,15 @@ The last 10% on the bottom will be reserved for site contact information, our na
 
 INSERT MAIN PAGE PICTURE
 
-**Artwork page**: INSERT WIREFRAME
+**Artwork page**: 
+![artwork](https://github.com/KRISWIU/cs326-final-tet/blob/d8dce59c222776df69b1a7a1e14a2fd2c9357e23/docs/imgs/artwork.png)
 
 May tentatively remove this feature, but would contain information about a specific artwork. Would have dedicated sections for title and author, and contains other sections for aspects like tags.
 
-INSERT IMAGE
 
-**Sign-up page**: INSERT PICTURE
+**Sign-up page**: 
+![signup](https://github.com/KRISWIU/cs326-final-tet/blob/d8dce59c222776df69b1a7a1e14a2fd2c9357e23/docs/imgs/signup.png)
+![signin](https://github.com/KRISWIU/cs326-final-tet/blob/d8dce59c222776df69b1a7a1e14a2fd2c9357e23/docs/imgs/signin.png)
 
 A basic page for users to sign up, if they don't already have accounts. Has two fields for username and password, and a submit button. Will tell the user if their username/password is invalid.
 
