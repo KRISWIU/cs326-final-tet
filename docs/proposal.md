@@ -57,10 +57,12 @@ May tentatively remove this feature, but would contain information about a speci
 
 A basic page for users to sign up, if they don't already have accounts. Has two fields for username and password, and a submit button. Will tell the user if their username/password is invalid.
 
-**Search page**: INSERT WIREFRAME
+**Search page**: 
+![search](https://github.com/KRISWIU/cs326-final-tet/blob/e8d74c0d460b7b0ca971a2bdc2443994f0fc8540/docs/imgs/searchpage.png)
 
 ## HTML and CSS ##
 
-**Add work page**: INSERT WIREFRAME
+**Add work page**: 
+![addwork](https://github.com/KRISWIU/cs326-final-tet/blob/e8d74c0d460b7b0ca971a2bdc2443994f0fc8540/docs/imgs/addpage.png)
 
 Allows a user to add an artwork to the database. Main things that the user can add are the name, the author, a link to the work, and an image.
