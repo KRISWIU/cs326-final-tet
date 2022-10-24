@@ -1,12 +1,8 @@
 #topBar {
-    background-color: black;
+    background-color: rgb(83, 77, 77);
 }
 
-.topBarElem {
-}
-
-.searchForm {
-    background-color: brown;
+.TopBarElem {
 }
 
 #siteName {
@@ -18,8 +14,8 @@
 }
 
 #bodyDiv{
-    height: 80%;
-    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 #bottom{
