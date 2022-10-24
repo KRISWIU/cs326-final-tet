@@ -66,3 +66,14 @@ A basic page for users to sign up, if they don't already have accounts. Has two 
 ![addwork](https://github.com/KRISWIU/cs326-final-tet/blob/e8d74c0d460b7b0ca971a2bdc2443994f0fc8540/docs/imgs/addpage.png)
 
 Allows a user to add an artwork to the database. Main things that the user can add are the name, the author, a link to the work, and an image.
+
+## Screen shots for implemented pages ##
+
+**MainPage**
+![mainpage](https://github.com/KRISWIU/cs326-final-tet/blob/0db2bbe665d63c40542c5d9de1396d26085bb58e/docs/imgs/mainpage_ss.png)
+
+**SignIn**
+![SignIn](https://github.com/KRISWIU/cs326-final-tet/blob/0db2bbe665d63c40542c5d9de1396d26085bb58e/docs/imgs/signin_ss.png)
+
+**SignUp**
+![SignUp](https://github.com/KRISWIU/cs326-final-tet/blob/0db2bbe665d63c40542c5d9de1396d26085bb58e/docs/imgs/signup_ss.png)
