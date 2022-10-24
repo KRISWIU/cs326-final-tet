@@ -43,8 +43,6 @@ The center of our page will be a large box divided into 4 smaller boxes, and sma
 
 The last 10% on the bottom will be reserved for site contact information, our names, and other more administrative information.
 
-INSERT MAIN PAGE PICTURE
-
 **Artwork page**: 
 ![artwork](https://github.com/KRISWIU/cs326-final-tet/blob/d8dce59c222776df69b1a7a1e14a2fd2c9357e23/docs/imgs/artwork.png)
 
@@ -77,3 +75,12 @@ Allows a user to add an artwork to the database. Main things that the user can a
 
 **SignUp**
 ![SignUp](https://github.com/KRISWIU/cs326-final-tet/blob/0db2bbe665d63c40542c5d9de1396d26085bb58e/docs/imgs/signup_ss.png)
+
+
+# Crediting
+
+Zhenduo Wang - KRISWIU: Some grid structure, initial main page design, and later wireframing
+
+Jacob Gray - PineVoid: Main page navigation bar, initial main page design, and base for other pages
+
+Yuxiang Nian - MacNian: Some grid structure, initial wireframing, and later wireframing
