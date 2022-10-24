@@ -20,14 +20,34 @@
 #bodyDiv{
     height: 80%;
     width: 80%;
+    position: fixed;
+    margin-top: 10%;
+    margin-bottom: 10%;
 }
 
 #bottom{
     height: 10%;
     width: 100%;
-    margin-bottom: 0px;
+    bottom: 0%;
+    position: fixed;
+    text-align: center;
 }
 
 #copyright{
     color: blue;
+    bottom: 0%;
+    position: relative;
+}
+
+.artwork {
+    margin: 1px;
+    background-color: black;
+    color: white;
+    height: 300px;
+    width: 200px;
+}
+
+.img-fluid {
+    height: 200px;
+    width: 100px;
 }
