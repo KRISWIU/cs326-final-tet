@@ -3,11 +3,13 @@
 
 <head>
     <title>The Artchive</title>
-    <link rel="stylesheet" href="main.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <!-- Don't really know too much about the details, but needs these lines to use bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="main.css"> <!-- Our style sheet -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -17,7 +19,7 @@
 
 
 <div id="topBar" class="container-fluid fixed-top">  
-    <div class="row">
+    <div class="row align-items-center">
         <h3 id="siteName" class="TopBarElem col-sm-2 text-center">The Artchive</h3>
         <div class="TopBarElem col-sm-1">
             <button class="TopBarElem btn-primary">Add works</button>
@@ -60,6 +62,10 @@
     </div>
 </div>
 
+
+<!-- End of navBar: start of body -->
+<div id="bodyDiv">
+
 <div class="container-fluid"></div>
     <!-- Filter button -->
     <div class="row">
@@ -70,23 +76,29 @@
     <div class="container">
         <div class="row text-center">
             <!-- Top row, left 3 -->
-            <div class="container col-sm-5" id = "col4">
+            <div class="container col-sm-5">
                 <div class="row">
-                    <div class="artwork col-sm-4">artwork
-                        <img class="img-fluid" src="https://www.forevergeek.com/static/uploads/33/2022/10/Denji-Chainsaw-Man-1-1140x641.jpeg"></img>
-                        <h5>Title: Chainsaw man</h5>
-                        <h5>Creator: Nian</h5>
+                    <!-- Artwork 1,1 -->
+                    <div class="artwork col-sm-4 card">
+                        <div class="card-body">
+                            <img class="card-img-bottom img-fluid" src="https://www.forevergeek.com/static/uploads/33/2022/10/Denji-Chainsaw-Man-1-1140x641.jpeg"></img>
+                            <h4>Title: Chainsaw man</h4>
+                            <h5>Creator: Nian</h5>
+                        </div>
                     </div>
-                    <div class="artwork col-sm-4">artwork
+                    <!-- Artwork 1,2 -->
+                    <div class="artwork col-sm-4">
                         <img class="img-fluid" src="https://th.bing.com/th/id/OIP._MqIAqTCES01_3Mk0i2CsQAAAA?pid=ImgDet&rs=1"></img>
                         <h5>Title: Chainsaw man</h5>
                         <h5>Creator: Nian</h5>
                     </div>
-                    <div class="artwork col-sm-4">artwork
+                    <!-- Artwork 2,1 -->
+                    <div class="artwork col-sm-4">
                         <img class="img-fluid" src="https://static.miraheze.org/greatcharacterswiki/2/23/Denji.png"></img>
                         <h5>Title: Chainsaw man</h5>
                         <h5>Creator: Nian</h5>
                     </div>
+                    <!-- Artwork 2,2 -->
                     <div class="artwork col-sm-4">artwork
                         <img class="img-fluid" src="https://images2.alphacoders.com/112/thumb-1920-1126207.png"></img>
                         <h5>Title: Chainsaw man</h5>
@@ -99,7 +111,7 @@
             <div class="col-sm-2"></div>
 
             <!-- Top row, right 3 -->
-            <div class="container col-sm-5" id = "col5">
+            <div class="container col-sm-5">
                 <div class="row">
                     <div class="artwork col-sm-4">artwork
                         <img class="img-fluid" src="https://th.bing.com/th/id/OIF.NksvrjUN3go8GvrmlXKnXA?pid=ImgDet&rs=1"></img>
@@ -123,9 +135,9 @@
                     </div>
                 </div>
             </div>
-            </div>
-
+        </div>
     </div>
+</div>
 
 </div>
 
