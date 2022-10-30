@@ -1,0 +1,64 @@
+#topBar {
+    background-color: rgb(83, 77, 77);
+}
+
+
+
+#siteName {
+    color: white;
+}
+
+#filterMenu {
+    min-width: 400px;
+}
+
+#bodyDiv{
+    height: 80%;
+    width: 80%;
+}
+
+#bottom{
+    height: 10%;
+    width: 100%;
+    bottom: 0%;
+    position: fixed;
+    text-align: center;
+}
+
+#copyright{
+    color: blue;
+    bottom: 0%;
+    position: relative;
+}
+
+.artwork {
+    margin: 1px;
+    background-color: black;
+    color: white;
+    height: 250px;
+    width: 300px;
+}
+
+.img-fluid {
+    width:450px;
+    height: 400px;
+}
+
+#col4{
+    width: 585px;
+    height: 1000px;
+}
+
+#result{
+    width: 480px;
+    height:440px;
+}
+
+
+.row1{
+    height: 56.39px;
+}
+.tag{
+    color:green;
+}
+

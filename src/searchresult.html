@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The Artchive</title>
+    <link rel="stylesheet" href="searchresult.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Don't really know too much about the details, but needs these lines to use bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+
+<body>
+
+
+<div id="topBar" class="container-fluid fixed-top">  
+    <div class="row">
+        <h3 id="siteName" class="TopBarElem col-sm-2 text-center">The Artchive</h3>
+        <div class="TopBarElem col-sm-1">
+            <button class="TopBarElem btn-primary">Add To Lists</button>
+        </div>
+
+        <!-- Search bar: definitely most complicated part -->
+        <form id="searchWrapper" class="TopBarElem form-group col-sm-6 container-fluid">
+            <div class="row">
+                <input id="searchBar" type="search" class="TopBarElem col-sm-11" placeholder="Search">
+                <div class="dropdown col-sm-1">
+                    <button id="filterButton" class="TopBarElem btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
+                    <div id="filterMenu" class="dropdown-menu container-fluid" aria-labelledby="filterDropdown">
+                        <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <h5 class="col-sm-3">Tags:</h5>
+                            <input class="col-sm-7"></input>
+                            <div class="col-sm-1"></div>
+                        </div>
+                        <!-- <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <button class="btn-light col-sm-10">Copy tags</button>
+                            <div class="col-sm-1"></div>
+                        </div> -->
+                        <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <h5 class="col-sm-3">Creator(s):</h5>
+                            <input class="col-sm-7"></input>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- End of search bar -->
+        <div class="TopBarElem col-sm-3 text-center">
+            <button id="listsButton" class="TopBarElem btn-primary">Lists</button>
+            <button id="loginProfileButton" class="TopBarElem btn-primary">Log in</button>
+        </div>
+    </div>
+</div>
+
+        
+   
+
+    <!-- left result grid -->
+    <div class="container">
+        <div class="row text-center">
+            <!-- Top row, left 3 -->
+            <div class="container col-sm-5" id = "col4">
+                <div class="row">
+                    <h3 id="name" class="name"><strong>Chainsaw Man</strong></h3>
+                    <hr>
+                    <h3 id="name" class="name"><strong>Score: 8.1</strong></h3> 
+                    <div class="artwork col-sm-4" id = "result">Chainsaw Man
+                        <img class="img-fluid" src="https://images2.alphacoders.com/112/1126207.png"</img>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+    <!-- right result detail -->        
+            <div class="container col-sm-5" id = "col4">
+                
+                 <h3 id="name" class="name"><strong>Author: Tatsuki Fujimoto</strong></h3>
+                 <hr>
+                 <h3 id="name" class="name"><strong>Tag:</strong></h3> 
+                 <strong> Japanese manga; 
+                    Action;
+                    Comedy horror;
+                    Dark fantasy;</strong>
+                
+                    <div class="result" id = "resultdetail"><h3><strong>Description</strong></h3>
+                        
+                        <div class = "text" id = "text">
+                        <text><strong>The story is set in a world where Devils (悪魔, Akuma) are born from human fears. Devils are usually dangerous and malevolent, their power is proportional to the fear they incite. However, humans can form contracts with them to use their power, and there are individuals specializing in hunting and employing them, called Devil Hunters (デビルハンター, Debiru Hantā). Devils originate from Hell, and exist in a cycle between Earth and Hell: they migrate to Earth when killed in Hell, and vice-versa. Dwelling in Hell are extremely powerful Devils called Primal Fears, which have never been killed. Transit between planes appears to be overseen by the Hell Devil (地獄の悪魔, Jigoku no Akuma).
+
+                            A Devil may, in certain conditions, inhabit the body of a dead human, gaining some of their memories and personality; such a creature is called a Fiend (魔人, Majin, lit. Demonic Person). Devils who naturally have a humanoid form are said to be benevolent to humans.
+                            
+                            The events of the story take place in 1997, in an alternate timeline where the Soviet Union still exists, and many events such as the Holocaust, AIDS and nuclear weapons are revealed to have been erased from history and have ceased to exist entirely due to the consumption of their respective Devils. Likewise, there has been no war since the First World War as the War Devil has been weakened to the point that the only traces of war exist in pop culture and media.</strong></text>
+                        </div>
+                       
+                      
+                                
+                    </div>
+                            
+                </div>
+            </div>        
+
+           
+          
+
+            
+           
+
+
+
+
+
+<div id="bottom" class="container-fluid fixed-top">
+    <p id="copyright" class="col-sm-5">@Copyright: Zhenduo Wang, Jacob Gray, Yuxiang Nian</p>
+</div>
+
+</body>
+
+</html>
