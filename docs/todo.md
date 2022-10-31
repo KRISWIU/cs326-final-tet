@@ -1,29 +1,29 @@
 # Todo list
 
 ## HTML work
-- [] **Jacob**: Implement some kind of "include" functionality for stuff like the navbar
+- [ ] **Jacob**: Implement some kind of "include" functionality for stuff like the navbar
 
-- [] **Jacob**: Improve navbar (mainly spacing)
-  - [] Make buttons look nicer
-  - [] Vertically center everything
-  - [] Make resizing nicer
-  - [] Verify functionality for smaller screens
-  - [] Improve search bar/dropdown menu
+- [ ] **Jacob**: Improve navbar (mainly spacing)
+      - [ ] Make buttons look nicer
+      - [ ] Vertically center everything
+      - [ ] Make resizing nicer
+      - [ ] Verify functionality for smaller screens
+      - [ ] Improve search bar/dropdown menu
 
 - Improve the homepage:
-  - [] **Jacob**: Fix grid spacing and element appearance
-  - [] **Jacob**: Add IDs and documentation on grid in anticipation of JS
-  - [] Possibly adding more content (not explicitly adding stuff)?
+  - [ ] **Jacob**: Fix grid spacing and element appearance
+  - [ ] **Jacob**: Add IDs and documentation on grid in anticipation of JS
+  - [ ] Possibly adding more content (not explicitly adding stuff)?
 
-- [] Add other HTML classes for use
-  - [] Add unified UI for tagging system
-    - [] **Jacob**: Add tag HTML for "boxes" after typing a tag
-    - [] **Jacob**: Allow adding and removal of tags
-  - [] Class for artworks/thumbnails (this would help a lot with preventing images become oversized)
-    - [] Possibly using cards? Would standardize JS stuff, when we get there
+- [ ] Add other HTML classes for use
+  - [ ] Add unified UI for tagging system
+        - [ ] **Jacob**: Add tag HTML for "boxes" after typing a tag
+        - [ ] **Jacob**: Allow adding and removal of tags
+  - [ ] Class for artworks/thumbnails (this would help a lot with preventing images become oversized)
+        - [ ] Possibly using cards? Would standardize JS stuff, when we get there
 
 - [] **Jacob** Improve login/sign up pages
-  - [] Honestly, is just about done: maybe just centering or reducing the bar size
+     - [] Honestly, is just about done: maybe just centering or reducing the bar size
 
 - [] Add page to display all user's lists
 
