@@ -22,7 +22,7 @@
       - [ ] Class for artworks/thumbnails (this would help a lot with preventing images become oversized)
             - [ ] Possibly using cards? Would standardize JS stuff, when we get there
 
-- [ ] **Jacob** Improve login/sign up pages
+- [ ] **Jacob**: Improve login/sign up pages
         - [ ] Honestly, is just about done: maybe just centering or reducing the bar size
 
 - [ ] Add page to display all user's lists
