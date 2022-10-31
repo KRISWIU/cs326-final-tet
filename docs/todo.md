@@ -22,18 +22,18 @@
   - [ ] Class for artworks/thumbnails (this would help a lot with preventing images become oversized)
         - [ ] Possibly using cards? Would standardize JS stuff, when we get there
 
-- [] **Jacob** Improve login/sign up pages
-     - [] Honestly, is just about done: maybe just centering or reducing the bar size
+- [ ] **Jacob** Improve login/sign up pages
+     - [ ] Honestly, is just about done: maybe just centering or reducing the bar size
 
-- [] Add page to display all user's lists
+- [ ] Add page to display all user's lists
 
-- [] Add page to add a work
+- [ ] Add page to add a work
 
-- [] Add page to view a list
+- [ ] Add page to view a list
 
-- [] Add general search page (returns a list of artworks after typing in a search term)
+- [ ] Add general search page (returns a list of artworks after typing in a search term)
 
-- [] Refine search result (artwork) page
+- [ ] Refine search result (artwork) page
 
 # JS work
 
