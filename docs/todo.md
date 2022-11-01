@@ -17,10 +17,10 @@
 
 - [ ] Add other HTML classes for use
     - [ ] Add unified UI for tagging system
-          - [ ] **Jacob**: Add tag HTML for "boxes" after typing a tag
-          - [ ] **Jacob**: Allow adding and removal of tags
+        - [ ] **Jacob**: Add tag HTML for "boxes" after typing a tag
+        - [ ] **Jacob**: Allow adding and removal of tags
     - [ ] Class for artworks/thumbnails (this would help a lot with preventing images become oversized)
-          - [ ] Possibly using cards? Would standardize JS stuff, when we get there
+        - [ ] Possibly using cards? Would standardize JS stuff, when we get there
 
 - [ ] **Jacob**: Improve login/sign up pages
     - [ ] Honestly, is just about done: maybe just centering or reducing the bar size
