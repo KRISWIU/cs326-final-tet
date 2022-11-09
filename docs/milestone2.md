@@ -66,20 +66,45 @@ Creates a new artwork in the database with given user data. Returns the object f
   - tags - list of numbers seperated by commas, indicating the tags to apply to the artwork upon creation. Will not create the artwork if tags do not exist.
 
 #### /users/
-Creates a new user with the given username and password. If successful, returns an object for the user. More information in 
+Creates a new user with the given username and password. If successful, returns an object for the user. More information in technicalNotes.md.
 Format:
 
 
 #### /users/{user}/lists/{listName}
-Creates a list with the given name. 
+Creates a list named {listName} attached to {user}. Returns an object with the list ID.
+
 
 ### PUT
 
+
 #### /artworks/{artwork}
-Changes the indicated property of the object to match what the user inputs.
-  - key - **Required** string which indicates property to change.
-  - type - **Required** indicates the type of operation on the key. One of "add", "set," or "remove". 
-  - value - **Required** 
+Changes the indicated property of the artwork to match what the user inputs.
+  - key - **Required** string which indicates property to change (eg. title, tags).
+  - type - **Required** string which indicates the type of operation on the key. One of "add", "set," or "remove". 
+  - value - **Required** string which indicates what value to set the key to. This should match directly how it should be stored in the database: eg., if the key holds an ID, this value should be an ID. If the key holds a link, the value should be a link.
+
+
+#### /users/{user}/lists/{listName}
+Alters a list by adding or removing an artwork from it. Returns the list ID. Format is:
+  - add - **Required** boolean (T/F) value indicating whether the command is to add or to remove an artwork. Following format changes as follows:
+For add = true, only requirement:
+  - artwork - **Required** number ID of the artwork to add to the list.
+For add = false, require exactly one of the following:
+  - artwork - number ID of the artwork to remove from the list.
+  - index - number indicating the index in the list of the artwork to remove (eg. the 3rd artwork in the list.)
 
 
 ### DELETE
+
+
+#### /artworks/{artwork}
+Removes the artwork with ID {artwork}.
+
+#### /users/{user}
+Removes the user with ID {user}. User should be signed in.
+
+#### /users/{user}/lists/{list}
+Removes the list with ID {list}. User should be signed in.
+
+#### /site
+Deletes everything (just kidding...)
