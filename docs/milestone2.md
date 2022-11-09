@@ -25,13 +25,13 @@ Common parameters:
 - tag - tag ID. One for each tag.
 
 
-## Endpoints
+# Endpoints
 
 
-### GET
+## GET
 
 
-- /artworks/{artwork}
+#### /artworks/{artwork}
 Returns a JSON object with artwork data for artwork ID. Empty object if ID is invalid.
 Refer to technicalNotes.md for information about what this will look like.
 
@@ -56,7 +56,7 @@ Returns the ID of the tag with the given name, if it exists.
 Returns the ID of the creator with the given name, if they exist. (May not implement this.)
 
 
-### POST
+## POST
 
 
 #### /artworks
@@ -74,7 +74,7 @@ Format:
 Creates a list named {listName} attached to {user}. Returns an object with the list ID.
 
 
-### PUT
+## PUT
 
 
 #### /artworks/{artwork}
@@ -94,7 +94,7 @@ For add = false, require exactly one of the following:
   - index - number indicating the index in the list of the artwork to remove (eg. the 3rd artwork in the list.)
 
 
-### DELETE
+## DELETE
 
 
 #### /artworks/{artwork}
