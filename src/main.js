@@ -1,6 +1,18 @@
-import 'gotoPages.js';
+// import 'gotoPages.js';   Importing makes express go big mad: fix later
 //nav bar js code
 
-document.getElementById("siteName").addEventListener("click", gotoMainPage());
+const express = require('express');
+const app = express();
+const port = 8000;
 
-document.getElementById('addWork').addEventListener('click', gotoAddWork());
+app.get('/', function(req, res) {
+    res.send("Hello world!");
+});
+
+
+
+app.listen(port);
+
+// Prev code for nav bar js code
+// document.getElementById("siteName").addEventListener("click", gotoMainPage());
+// document.getElementById('addWork').addEventListener('click', gotoAddWork());
