@@ -108,3 +108,8 @@ Deletes everything (just kidding...)
 Link to hosted Heroku site: 
 
 https://the-artchive.herokuapp.com/
+
+
+# Contributions
+
+**PineVoid - Jacob** - Initial creation of server.js, searchBar listener in main.js, and part 0
