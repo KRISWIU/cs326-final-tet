@@ -70,11 +70,7 @@ app.get("/tags/creators/:creator", (req,res)=>{
  * Returns the object for the new artwork if the operation was successful.
  */
 app.post("/artworks", (req, res) => {
-<<<<<<< HEAD
     res.json({ artwork: 1234567890, creator: 1234567890, msg: "Artwork creation called." });
-=======
-    res.write("artwork creation " + req.params.artwork + " called.");
->>>>>>> 6821d75a515625e4c3ec509b057b92f8b32956a3
     res.end();
 });
 
