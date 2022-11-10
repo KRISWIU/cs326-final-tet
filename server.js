@@ -2,7 +2,7 @@ const { response } = require('express');
 const express = require('express');
 const app = express();
 const port = 8000;
-const router = express.Router();
+// const router = express.Router();
 
 // Serve basic pages
 app.use(express.static('src'))

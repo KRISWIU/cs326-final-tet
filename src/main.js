@@ -19,6 +19,8 @@ async function makeRequest(url, method) {
 
 // On page start, try to add event listener to searchBar 
 window.onload = () => {
+    
+    // Search bar event
     document.getElementById("searchBar").addEventListener("click", async () => {
         const searchBarElem = document.getElementById("searchBar");
         const searchKey = searchBarElem.value;
@@ -29,6 +31,8 @@ window.onload = () => {
         (async () => {
             const returnObj = await makeRequest(URL, "POST"); 
             console.log("The response object is: " + JSON.stringify(returnObj)); })();  
-    });
-    // End of event listener
+    }); // End of search bar listener
+
+    
+
 };
