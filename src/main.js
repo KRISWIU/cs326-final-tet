@@ -4,8 +4,8 @@
 // document.getElementById("siteName").addEventListener("click", gotoMainPage());
 // document.getElementById('addWork').addEventListener('click', gotoAddWork());
 
-
-
+const baseURL = "https://the-artchive.herokuapp.com";
+const localBaseURL = "http://localhost:8000";
 
 // Test code for HTTP requests: might be a better way
 
@@ -22,11 +22,11 @@ window.onload = () => {
     document.getElementById("searchBar").addEventListener("click", async () => {
         const searchBarElem = document.getElementById("searchBar");
         const searchKey = searchBarElem.value;
-        const URL = "http://localhost:8000/artworks"; // This will only work locally!!!
+        const URL = localBaseURL + "/artworks"; // This will only work locally!!!
         // For the actual server, use: "https://the-artchive.herokuapp.com/artworks/" + artworkName
         
         // Print out the value using IIFE
-        (async () => { 
+        (async () => {
             const returnObj = await makeRequest(URL, "POST"); 
             console.log("The response object is: " + JSON.stringify(returnObj)); })();  
     });
