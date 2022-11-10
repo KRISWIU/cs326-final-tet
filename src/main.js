@@ -1,4 +1,4 @@
-// import 'gotoPages.js';
+//import * as addpage from 'gotoPages.js';
 //nav bar js code
 
 // document.getElementById("siteName").addEventListener("click", gotoMainPage());
