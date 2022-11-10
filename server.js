@@ -29,7 +29,7 @@ app.get("/artworks/search", (req, res) => {
 //  ###  POST  ###  \\
 
 app.post("/artworks", (req, res) => {
-    res.write("artwork creation called.");
+    res.json({ artwork: 1234567890, creator: 1234567890, msg: "Artwork creation called." });
     res.end();
 });
 
