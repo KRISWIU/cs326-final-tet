@@ -106,12 +106,6 @@ Deletes everything (just kidding...)
 # Part 3
 ![image](https://user-images.githubusercontent.com/112954041/201002396-cfb88256-5e03-4f6f-b4ec-eb56f3f22928.png)
 
-This is our main page. It contains searching function, adding to list function, checking list function,logging in function  and filter function. We added some eventlisteners in them.
-
-![image](https://user-images.githubusercontent.com/112954041/201002646-a626101c-8eae-4d94-8212-164115d8398c.png)
-
-When we click the filter, it will provide more details about the tag and creator. It can help us to do a more precise searching.
-
 Link to hosted Heroku site: 
 
 https://the-artchive.herokuapp.com/
@@ -119,4 +113,8 @@ https://the-artchive.herokuapp.com/
 
 # Contributions
 
-**PineVoid - Jacob** - Initial creation of server.js, searchBar listener in main.js, and part 0
+**PineVoid - Jacob** - Initial creation of server.js, searchBar listener in main.js, heroku, and part 0 documentation
+
+**Zhenduo Wang - KRISWIU** - Implementation of most of GET, POST, PUT, DELETE in server.js, and filter and login listener in main.JS
+
+**Yuxiang Nian - MacNian** - Creation of searchResult page
