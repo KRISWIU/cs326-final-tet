@@ -9,6 +9,7 @@ app.use(express.static('src'))
 
 
 // Implement the commands from the documentation and add statements for all of the possible routes. 
+
 // Functions don't actually have to do much right now
 
 
@@ -35,10 +36,16 @@ app.post("/artworks", (req, res) => {
 
 
 //  ###  PUT  ###  \\
-
+app.put("/artworks",(req,res)=>{
+    res.write("artwork put called.");
+    res.end();
+});
 
 //  ###  DELETE  ###  \\
-
+app.delete("/artworks",(req,res)=>{
+    res.write("artwork delete called.");
+    res.end();
+});
 
 
 
