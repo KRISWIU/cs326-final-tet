@@ -1,12 +1,5 @@
 # API
 
-WIP. Information still needed:
-
-- Technical detail on what responses will look like.
-- Errors.
-- Formatting examples.
-Jacob can work on these.
-
 ## Part 0/1
 
 Our API will be a REST API, with the following methods:
@@ -108,3 +101,10 @@ Removes the list with ID {list}. User should be signed in.
 
 #### /site
 Deletes everything (just kidding...)
+
+
+# Part 3
+
+Link to hosted Heroku site: 
+
+https://the-artchive.herokuapp.com/
