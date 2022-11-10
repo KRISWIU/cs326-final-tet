@@ -15,12 +15,13 @@ app.use(express.static('src'))
 //  ###  GET  ###  \\
 
 app.get("/artworks/:artwork", (req, res) => {
-    res.write("artwork retrieval called.");
+    res.write("artwork retrieval on artwork " + req.params.artwork + " called.");
     res.end();
 });
 
 app.get("/artworks/search", (req, res) => {
     res.write("artwork search called.");
+    res.end();
 });
 
 // The rest go here
@@ -29,6 +30,7 @@ app.get("/artworks/search", (req, res) => {
 
 app.post("/artworks", (req, res) => {
     res.write("artwork creation called.");
+    res.end();
 });
 
 
