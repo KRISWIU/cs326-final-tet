@@ -9,7 +9,6 @@ app.use(express.static('src'))
 
 
 // Implement the commands from the documentation and add statements for all of the possible routes. 
-
 // Functions don't actually have to do much right now
 
 
@@ -21,7 +20,7 @@ app.get("/artworks/:artwork", (req, res) => {
 });
 
 app.get("/artworks/search", (req, res) => {
-    res.write("artwork search called.");
+    res.write("artwork search " + req.params.artwork + " called.");
     res.end();
 });
 
@@ -30,20 +29,20 @@ app.get("/artworks/search", (req, res) => {
 //  ###  POST  ###  \\
 
 app.post("/artworks", (req, res) => {
-    res.write("artwork creation called.");
+    res.write("artwork creation " + req.params.artwork + " called.");
     res.end();
 });
 
 
 //  ###  PUT  ###  \\
 app.put("/artworks",(req,res)=>{
-    res.write("artwork put called.");
+    res.write("artwork put " + req.params.artwork + " called.");
     res.end();
 });
 
 //  ###  DELETE  ###  \\
 app.delete("/artworks",(req,res)=>{
-    res.write("artwork delete called.");
+    res.write("artwork delete " + req.params.artwork + " called.");
     res.end();
 });
 
