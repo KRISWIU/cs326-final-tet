@@ -35,28 +35,48 @@
 
 - [ ] Refine search result (artwork) page
 
-# JS work
+## JS work
 
-[Next part](https://docs.google.com/document/d/1U1iXfvlNBNziRkxjKIaDFUqQ8vpYtjOBgWLPY3GRJxg/edit) of the project:
+[Part 2](https://docs.google.com/document/d/1U1iXfvlNBNziRkxjKIaDFUqQ8vpYtjOBgWLPY3GRJxg/edit) of the project:
 
-Currently more, but not sure of the extent
+- [ ] Fix documentation on the API
+      - [ ] Fix or add documentation on returned objects and related information
+      - [ ] Add examples of API commands and outputs
 
-- Part 0: plan out our project's API
-  - Need to map out which services we want to provide to clients
-  - Should detail plan in milestone2.md
-  - Can use flowcharts, should write documentation
+- [ ] Add rest of the API operations in (if not already done)
+      - [ ] Fix formatting on some of the operations, if they're incorrect (may need to allow "querying" or key specification)
+      - [ ] Add the actual operations in
+      - [ ] 
 
-- Part 1: Dummy server
-  - Should implement API
-  - Can respond with random data
-  - Don't need to write anything in doc
+- [ ] Implement remaining GET API operations
+      - [ ] /artworks/{artwork}
+      - [ ] /artworks/search - Current action taken is dummy action
+      - [ ] /users/{user}/lists
+      - [ ] /users/{user}/list
+      - [ ] /tags/{tagName} 
+      - [ ] /tags/creator/{creatorName} - will likely revise this: don't actually implement
 
-- Part 2: 
-  - Should perform CRUD operations on server
-  - Include in milestone2.md
+- [ ] Implement remaining POST API operations
+      - [ ] /artworks
+      - [ ] /users
+      - [ ] /users/{user}/lists/{listName} - This will be edited to have listName as a parameter instead
 
-- Part 3:
-  - Should deploy and host application. 
-  - Include link in milestone2.md
+- [ ] Implement remaining PUT API operations
+      - [ ] /artworks/{artwork}
+      - [ ] /users/{user}/lists/{listName}
 
-- Create setup.md with steps described on how to build our project.
+- [ ] Implement remaining DELETE API operations
+      - [ ] /artworks/{artwork}
+      - [ ] /users/{user}
+      - [ ] /users/{user}/lists/{listName}
+
+- [ ] Add necessary JS interactions with other pieces (other event listeners, linking to other pages)
+
+- [ ] **Jacob**: Fix Heroku not working and possibly add variables for Heroku vs. local
+
+- [ ] Create setup.md with steps described on how to build our project.
+
+
+## Jacob's priorities
+
+Going to probably try to get Heroku to function, then switch focus back to HTML and CSS. After that is done, I may be able to do most of the server stuff, if it's too hard for you two.

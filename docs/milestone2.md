@@ -58,7 +58,7 @@ Creates a new artwork in the database with given user data. Returns the object f
   - creator - ID for creator of this piece.
   - tags - list of numbers seperated by commas, indicating the tags to apply to the artwork upon creation. Will not create the artwork if tags do not exist.
 
-#### /users/
+#### /users
 Creates a new user with the given username and password. If successful, returns an object for the user. More information in technicalNotes.md.
 Format:
 
@@ -76,6 +76,10 @@ Changes the indicated property of the artwork to match what the user inputs.
   - type - **Required** string which indicates the type of operation on the key. One of "add", "set," or "remove". 
   - value - **Required** string which indicates what value to set the key to. This should match directly how it should be stored in the database: eg., if the key holds an ID, this value should be an ID. If the key holds a link, the value should be a link.
 
+#### /users/{user}
+Changes the indicated property of the user to match what the user inputs.
+  - key - **Required** string which indicates property to change (eg. username, password). 
+  - value - **Required** string which indicates what value to set the key to. This should match directly how it should be stored in the database: eg., if the key holds an ID, this value should be an ID. If the key holds a link, the value should be a link.
 
 #### /users/{user}/lists/{listName}
 Alters a list by adding or removing an artwork from it. Returns the list ID. Format is:
