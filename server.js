@@ -1,11 +1,14 @@
 const express = require('express');
 const app = express();
+console.log("Server successfully started.");
 const port = process.env.port || 5000;
+console.log("Selected port number is: " + port);
 // const router = express.Router();
 
 // Serve basic pages
+console.log("Server about to serve basic pages.");
 app.use(express.static('src'))
-
+console.log("Server has served basic pages.");
 
 // Implement the commands from the documentation and add statements for all of the possible routes. 
 // Functions don't actually have to do much right now
@@ -138,5 +141,5 @@ app.delete("/artworks/:artwork",(req,res)=>{
     res.end();
 });
 
-
 app.listen(port);
+console.log("Application is now listening on port " + port);
