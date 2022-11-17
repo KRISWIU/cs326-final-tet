@@ -71,8 +71,9 @@
       - [ ] /users/{user}/lists/{listName}
 
 - [ ] Add necessary JS interactions with other pieces (other event listeners, linking to other pages)
+      - Switch webpages upon clicks (may be able to do this with plain HTML)
 
-- [ ] **Jacob**: Fix Heroku not working and possibly add variables for Heroku vs. local
+- [x] **Jacob**: Fix Heroku not working and possibly add variables for Heroku vs. local
 
 - [ ] Create setup.md with steps described on how to build our project.
 
