@@ -5,4 +5,4 @@ The following modules will need to be installed:
 - Express
 - MongoDB
 
-To install these, use `npm install express` and `npm install mongodb` respectively.
+To install these, using `npm install` in console should be sufficient. Use `npm install express` and `npm install mongodb` if that doesn't work.
