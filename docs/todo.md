@@ -73,11 +73,22 @@
 - [ ] Add necessary JS interactions with other pieces (other event listeners, linking to other pages)
       - Switch webpages upon clicks (may be able to do this with plain HTML)
 
-- [x] **Jacob**: Fix Heroku not working and possibly add variables for Heroku vs. local
+- [x] **Jacob**: Fix Heroku not working
 
-- [ ] Create setup.md with steps described on how to build our project.
+- [x] Create setup.md with steps described on how to build our project.
 
+- [ ] Potentially change API routing to look nicer by using express.Router()
 
-## Jacob's priorities
+- [ ] Refactor JS code into multiple files
 
-Going to probably try to get Heroku to function, then switch focus back to HTML and CSS. After that is done, I may be able to do most of the server stuff, if it's too hard for you two.
+- [ ] Potentially refactor JS code to use ES6 and modules
+
+## Meta
+
+- [x] Update package.json
+
+- [x] Edit gitignore
+
+- [ ] Remove node_modules folder from git
+
+- [ ] Update readme or change default displayed document

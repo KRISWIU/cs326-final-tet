@@ -1,30 +1,52 @@
-const express = require('express');
+ const express = require('express');
+const { MongoClient } = require('mongodb');
+
+// Start up server
 const app = express();
 console.log("Server successfully started.");
 const port = process.env.PORT || 5000;
 console.log("Selected port number is: " + port);
-// const router = express.Router();
+
+// Function for connecting to database
+let uri;
+if (!process.env.URI) {
+    // For local connection
+    secrets = require('secrets.json');
+    uri = secrets.uri;
+} else {
+    // For heroku
+    uri = process.env.URI;
+}
+
+/**
+ * Returns a connection to the database. 
+ * Doesn't do any error checking, so the return value should be checked (at the moment.)
+ */
+async function connectToDatabase() {
+    const client = new MongoClient(uri);
+
+}
+
+
 
 // Serve basic pages
 console.log("Server about to serve basic pages.");
 app.use(express.static('src'))
 console.log("Server has served basic pages.");
 
-// Implement the commands from the documentation and add statements for all of the possible routes. 
-// Functions don't actually have to do much right now
-
-
-
 
 //  ###  GET  ###  \\
+
 /**
  * Returns a JSON object with artwork data for artwork ID. 
  * Empty object if ID is invalid. Refer to technicalNotes.md 
  * for information about what this will look like.
  */
 app.get("/artworks/:artwork", (req, res) => {
-    res.send("artwork get for:" + req.params.artwork);//not sure if this format is correct
+    // Actual database code goes here
+    res.send("Getting artwork " + req.params.artwork + ":");
     res.write("artwork retrieval on artwork " + req.params.artwork + " called.");
+    console.log("/artworks/:artwork called on artwork " + req.params.artwork);
     res.end();
 });
 
@@ -35,7 +57,6 @@ app.get("/artworks/search", (req, res) => {
     res.write("artwork search " + req.params.artwork + " called.");
     res.end();
 });
-
 
 /**
  * Returns an object summarizing basic information of all lists for this user.
