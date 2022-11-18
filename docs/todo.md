@@ -49,8 +49,8 @@
       - [ ] 
 
 - [ ] Implement remaining GET API operations
-      - [ ] /artworks/{artwork}
-      - [ ] /artworks/search - Current action taken is dummy action
+      - [ ] /artworks/{artwork} (Server-side is done)
+      - [ ] /artworks/search - (Server side data is dummy data, this will be the hardest command to implement if we want imperfect matching.)
       - [ ] /users/{user}/lists
       - [ ] /users/{user}/list
       - [ ] /tags/{tagName} 
@@ -89,6 +89,6 @@
 
 - [x] Edit gitignore
 
-- [ ] Remove node_modules folder from git
+- [x] Remove node_modules folder from git
 
-- [ ] Update readme or change default displayed document
+- [x] Update readme or change default displayed document
