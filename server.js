@@ -59,6 +59,7 @@ app.get("/artworks/:artwork", async (req, res) => {
     // res.send("Getting artwork " + req.params.artwork + ":");
     // res.write("artwork retrieval on artwork " + req.params.artwork + " called.");
     console.log(queryResult);
+    await disconnectFromDatabase(client);
     res.end();
 });
 
