@@ -30,11 +30,14 @@ Refer to technicalNotes.md for information about what this will look like.
 
 #### /artworks/search
 Returns a JSON object with IDs matching the input results. Search format is:
-- keywords - **Required** string which matches to titles, authors, etc. Exact specifics may be changed.
+- keywords - string which matches to titles, authors, etc. Exact specifics may be changed.
 - posTags - comma-seperated list of numbers which map to tags. All returned search results will have these tags.
 - negTags - comma-seperated list of numbers which map to tags. No returned search result will have any of these tags. (May not implement this.)
 - limit - maximum number of results to return.
 - offset - number indicating which result to start displaying at (useful when seperating search results into pages.)
+
+### /users/{username}
+Returns the ID associated with this username, as well as other potentially important information.
 
 #### /users/{user}/lists
 Returns an object summarizing basic information of all lists for this user. Does not return the lists themselves.

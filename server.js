@@ -11,7 +11,8 @@ console.log("Selected port number is: " + port);
 let uri;
 if (!process.env.URI) {
     // For local connection
-    secrets = require('secrets.json');
+    console.log("Loading URI from secrets file...");
+    let secrets = require('secrets.json');
     uri = secrets.uri;
 } else {
     // For heroku
@@ -19,12 +20,17 @@ if (!process.env.URI) {
 }
 
 /**
- * Returns a connection to the database. 
+ * Connects the given client. 
  * Doesn't do any error checking, so the return value should be checked (at the moment.)
  */
 async function connectToDatabase() {
-    const client = new MongoClient(uri);
+    client = new MongoClient(uri);
+    await client.connect();
+    return client;
+}
 
+async function disconnectFromDatabase(dbClient) {
+    await dbClient.close();
 }
 
 
@@ -39,22 +45,53 @@ console.log("Server has served basic pages.");
 
 /**
  * Returns a JSON object with artwork data for artwork ID. 
- * Empty object if ID is invalid. Refer to technicalNotes.md 
+ * null if ID is invalid. Refer to technicalNotes.md 
  * for information about what this will look like.
  */
-app.get("/artworks/:artwork", (req, res) => {
-    // Actual database code goes here
-    res.send("Getting artwork " + req.params.artwork + ":");
-    res.write("artwork retrieval on artwork " + req.params.artwork + " called.");
-    console.log("/artworks/:artwork called on artwork " + req.params.artwork);
+app.get("/artworks/:artwork", async (req, res) => {
+    console.log("GET /artworks/:artwork called on " + req.params.artwork + ".");
+    const client = await connectToDatabase();
+    console.log("Client is: " + client);
+    const artworks = client.db("database1").collection("artworks");
+    const queryResult = await artworks.findOne({id: req.params.artwork });
+    console.log(queryResult);
+    if (queryResult === null) {
+        console.log("Requested artwork not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved artwork. Artwork is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    // res.send("Getting artwork " + req.params.artwork + ":");
+    // res.write("artwork retrieval on artwork " + req.params.artwork + " called.");
+    await disconnectFromDatabase(client);
+    res.end();
+    console.log("Response successfully delivered and connection ended.");
+});
+
+/**
+ * Returns a JSON array with IDs matching the input results.
+ */
+app.get("/artworks/search", async (req, res) => {
+    console.log("GET /artworks/search called on " + req.url + ".");
+    // Default values for queries
+    const keywords = req.query.keywords === null ? []: req.query.keywords;
+    const posTags = req.query.tags === null ? []: req.query.posTags;
+        // No neg tags as of right now
+    const limit = req.query.limit === null ? 5: req.query.limit;
+    const offset = req.query.offset === null ? 0: req.query.offset;
+    // Exact database operations can wait: implement some dummy operations for now
+    res.json([1, 2, 3, 4, 5]);
+    console.log("Operation successful.");
     res.end();
 });
 
 /**
- * Returns a JSON object with IDs matching the input results.
+ * Returns the ID associated with this username, as well as other potentially 
+ * important information.
  */
-app.get("/artworks/search", (req, res) => {
-    res.write("artwork search " + req.params.artwork + " called.");
+app.get("/users/:user",  (req, res) => {
+    console.log("GET /users/:user called on " + req.params.user + ".");
     res.end();
 });
 
@@ -63,7 +100,7 @@ app.get("/artworks/search", (req, res) => {
  * Does not return the lists themselves.
  */
 app.get("/users/:user/lists",  (req, res) => {
-    res.write("user's list of " + req.params.user +" retriveal called");
+    res.write("user's list of " + req.params.user +" retrieval called");
     res.end();
 });
 
@@ -71,7 +108,7 @@ app.get("/users/:user/lists",  (req, res) => {
  * Returns the ID of the tag with the given name, if it exists.
  */
 app.get("/tags/:tagName", (req,res)=>{
-    res.write("tag id of  " + req.params.tagName + " retriveal called");
+    res.write("tag id of  " + req.params.tagName + " retrieval called");
     res.end();
 });
 
