@@ -70,8 +70,8 @@
       - [ ] /users/{user}
       - [ ] /users/{user}/lists/{listName}
 
-- [ ] Add necessary JS interactions with other pieces (other event listeners, linking to other pages)
-      - Switch webpages upon clicks (may be able to do this with plain HTML)
+- [ ] **Zhenduo**Add necessary JS interactions with other pieces (other event listeners, linking to other pages)
+      - Switch webpages upon clicks (may be able to do this with plain HTML which need to be implement after all page are in haroku)
 
 - [x] **Jacob**: Fix Heroku not working
 
