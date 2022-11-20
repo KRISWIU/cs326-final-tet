@@ -1,8 +1,13 @@
 //import * as addpage from 'gotoPages.js';
 
-const baseURL = "https://the-artchive.herokuapp.com";
-const localBaseURL = "http://localhost:8000";
-
+// This is the version for heroku: change this to false if testing locally.
+const isLocalVersion = false;
+let baseURL = "";
+if (isLocalVersion === false) { 
+    baseURL = "https://the-artchive.herokuapp.com";
+} else {
+    baseURL = "http://localhost:8000";
+}
 // Test code for HTTP requests: might be a better way
 
 async function makeRequest(url, method) {
@@ -20,20 +25,19 @@ window.onload = () => {
     document.getElementById("searchBar").addEventListener("click", async () => {
         const searchBarElem = document.getElementById("searchBar");
         const searchKey = searchBarElem.value;
-        const URL = localBaseURL + "/artworks"; // This will only work locally!!!
-        // For the actual server, use: "https://the-artchive.herokuapp.com/artworks/" + artworkName
-        
+        const URL = baseURL + "/artworks";
+
         // Print out the value using IIFE
         (async () => {
             const returnObj = await makeRequest(URL, "POST"); 
             console.log("The response object is: " + JSON.stringify(returnObj)); })();  
     });
-    // End of event listener
+    // End of event listener for search bar
 
     document.getElementById("loginProfileButton").addEventListener("click", async ()=>{
         const loginBut = document.getElementById("loginProfileButton");
         const userName = loginBut.value;
-        const URL = localBaseURL + "/users/:" + userName;
+        const URL = baseURL + "/users/:" + userName;
 
         (async () => {
             const returnObj = await makeRequest(URL, "POST"); 
@@ -45,11 +49,11 @@ window.onload = () => {
         const creators = document.getElementById("creators");
         let URL = '';
         if (tags.value!==null && creators.value!==null){
-            URL = localBaseURL + "/tags/creators/:" + creators.value;
+            URL = baseURL + "/tags/creators/:" + creators.value;
         }else if(tags.value!==null){
-            URL = localBaseURL + "/tags/:" + tags.value;
+            URL = baseURL + "/tags/:" + tags.value;
         }else if(creators.value!==null){
-            URL = localBaseURL + "/tags/creators/:" + creators.value;
+            URL = baseURL + "/tags/creators/:" + creators.value;
         }
 
         (async () => {
