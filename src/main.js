@@ -57,6 +57,6 @@ window.onload = () => {
             console.log("The response object is: " + JSON.stringify(returnObj)); })();  
     });
 
-    document.getElementById("siteName").addEventListener("click", gotoMainPage());
-    document.getElementById('addWork').addEventListener('click', gotoAddWork());
+    //document.getElementById("siteName").addEventListener("click", gotoMainPage());
+    //document.getElementById('addWork').addEventListener('click', gotoAddWork());
 };

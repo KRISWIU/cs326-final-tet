@@ -1,9 +1,13 @@
-export function gotoMainPage(){
-    window.location.rel="external nofollow";
-    window.location.href="main.html";
+ function gotoMainPage(){
+    //window.location.rel="external nofollow";
+    window.location="index.html";
 }
 
-export function gotoAddWork(){
-    window.location.rel="external nofollow";
-    window.location.href = "./addPage.html";
+ function gotoAddWork(){
+    //window.location.rel="external nofollow";
+    window.location = "addPage.html";
+}
+function gotoLogIn(){
+    //window.location.rel="external nofollow";
+    window.location = "login.html";
 }
