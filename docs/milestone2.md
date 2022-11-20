@@ -26,7 +26,22 @@ Common parameters:
 
 #### /artworks/{artwork}
 Returns a JSON object with artwork data for artwork ID. Empty object if ID is invalid.
-Refer to technicalNotes.md for information about what this will look like.
+
+**Example command:**
+`curl -X GET http://the-artchive.herokuapp.com/artworks/2 -H "Content-Type: application.json"`
+
+**Example response:**
+```
+{
+  "_id": "000000000000000",
+  "id": 2,
+  "title": "The Waste Land",
+  "creator": 3,
+  "tags": [5],
+  "links": ["https://www.poetryfoundation.org/poems/47311/the-waste-land"],
+  "dateAdded": "11/19/2022"
+}
+```
 
 #### /artworks/search
 Returns a JSON object with IDs matching the input results. Search format is:
@@ -35,6 +50,16 @@ Returns a JSON object with IDs matching the input results. Search format is:
 - negTags - comma-seperated list of numbers which map to tags. No returned search result will have any of these tags. (May not implement this.)
 - limit - maximum number of results to return.
 - offset - number indicating which result to start displaying at (useful when seperating search results into pages.)
+
+**Example command:**
+`curl -X GET http://the-artchive.herokuapp.com/artworks/search?keywords=The-Waste-Land&posTags=[5] -H "Content-Type: application.json"`
+
+**Example response:**
+[
+  { artwork1 },
+  { artwork2 },
+  { artwork3 }
+]
 
 ### /users/{username}
 Returns the ID associated with this username, as well as other potentially important information.
