@@ -57,6 +57,10 @@ window.onload = () => {
             console.log("The response object is: " + JSON.stringify(returnObj)); })();  
     });
 
-    document.getElementById("siteName").addEventListener("click", gotoMainPage());
-    document.getElementById('addWork').addEventListener('click', gotoAddWork());
+    document.getElementById("siteName").addEventListener("click", function(){
+        window.location.replace("http://the-artchive.herokuapp.com/");
+    });
+    document.getElementById('addWork').addEventListener('click', function(){
+        window.location.replace("http://the-artchive.herokuapp.com/"); // change this url to the addPage Url
+    });
 };
