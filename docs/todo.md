@@ -39,16 +39,16 @@
 
 [Part 2](https://docs.google.com/document/d/1U1iXfvlNBNziRkxjKIaDFUqQ8vpYtjOBgWLPY3GRJxg/edit) of the project:
 
-- [ ] Fix documentation on the API
+- [ ] **Zhenduo**Fix documentation on the API
       - [ ] Fix or add documentation on returned objects and related information
       - [ ] Add examples of API commands and outputs
 
-- [ ] Add rest of the API operations in (if not already done)
+- [ ] **Zhenduo**Add rest of the API operations in (if not already done)
       - [ ] Fix formatting on some of the operations, if they're incorrect (may need to allow "querying" or key specification)
       - [ ] Add the actual operations in
       - [ ] 
 
-- [ ] Implement remaining GET API operations
+- [ ] **Zhenduo**Implement remaining GET API operations
       - [ ] /artworks/{artwork} (Server-side is done)
       - [ ] /artworks/search - (Server side data is dummy data, this will be the hardest command to implement if we want imperfect matching.)
       - [ ] /users/{user}/lists
@@ -56,16 +56,16 @@
       - [ ] /tags/{tagName} 
       - [ ] /tags/creator/{creatorName} - will likely revise this: don't actually implement
 
-- [ ] Implement remaining POST API operations
+- [ ] **Zhenduo**Implement remaining POST API operations
       - [ ] /artworks
       - [ ] /users
       - [ ] /users/{user}/lists/{listName} - This will be edited to have listName as a parameter instead
 
-- [ ] Implement remaining PUT API operations
+- [ ] **Zhenduo**Implement remaining PUT API operations
       - [ ] /artworks/{artwork}
       - [ ] /users/{user}/lists/{listName}
 
-- [ ] Implement remaining DELETE API operations
+- [ ] **Zhenduo**Implement remaining DELETE API operations
       - [ ] /artworks/{artwork}
       - [ ] /users/{user}
       - [ ] /users/{user}/lists/{listName}
