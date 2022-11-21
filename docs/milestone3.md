@@ -16,10 +16,10 @@ This collection is used to store data for artworks. Each document in this databa
 - `creator` - int for the artwork creator's ID. May be rewritten to be an array, to allow for multiple creators. 0 indicates no creator or an anonymous creator.
 - `tags` - int array for holding the IDs of the tags applied to this artwork.
 - `links` - string array for holding URLs related to the artwork.
-- `dateAdded` - string indicating when the artwork was added, in format mm/dd/yyyy.
 
 **Optional fields:**
 - `img` - String URL to the default img displayed for this artwork.
+- `dateAdded` - string indicating when the artwork was added, in format mm/dd/yyyy.
 
 *Example document:*
 ```
@@ -103,6 +103,12 @@ None as of right now.
     "lists": [ [1, 2], [] ]
 }
 ```
+
+## Currently working features:
+
+Currently, our database works fine and has some basic data, although not all operations are implemented on the server. We should support GET, POST, PUT, and DELETE for artworks, but testing them will have to be done through CURL or some other kind of console. Examples of everything and how to call them are either included in here or milestone2.md (which has been updated but not finished since the last milestone due date.)
+
+Heroku currently has issues (we are mainly struggling with switching pages,) but this may be resolved soon.
 
 
 # Division of Labor

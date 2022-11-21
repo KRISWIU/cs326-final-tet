@@ -1,10 +1,10 @@
  const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 // Start up server
 const app = express();
 console.log("Server successfully started.");
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 console.log("Selected port number is: " + port);
 
 // Function for connecting to database
@@ -50,10 +50,11 @@ console.log("Server has served basic pages.");
  */
 app.get("/artworks/:artwork", async (req, res) => {
     console.log("GET /artworks/:artwork called on " + req.params.artwork + ".");
+    const artwork = parseInt(req.params.artwork);
     const client = await connectToDatabase();
     console.log("Client is: " + client);
-    const artworks = client.db("database1").collection("artworks");
-    const queryResult = await artworks.findOne({id: req.params.artwork });
+    const artworksDB = client.db("database1").collection("artworks");
+    const queryResult = await artworksDB.findOne({id: artwork});
     console.log(queryResult);
     if (queryResult === null) {
         console.log("Requested artwork not found.");
@@ -62,8 +63,6 @@ app.get("/artworks/:artwork", async (req, res) => {
         console.log("Successfully retrieved artwork. Artwork is: " + JSON.stringify(queryResult));
         res.json(queryResult);
     }
-    // res.send("Getting artwork " + req.params.artwork + ":");
-    // res.write("artwork retrieval on artwork " + req.params.artwork + " called.");
     await disconnectFromDatabase(client);
     res.end();
     console.log("Response successfully delivered and connection ended.");
@@ -129,8 +128,36 @@ app.get("/tags/creators/:creator", (req,res)=>{
  * Creates a new artwork in the database with given user data. 
  * Returns the object for the new artwork if the operation was successful.
  */
-app.post("/artworks", (req, res) => {
-    res.json({ artwork: 1234567890, creator: 1234567890, msg: "Artwork creation called." });
+app.post("/artworks", async (req, res) => {
+    console.log("POST /artworks called on " + req.url + ".");
+    const title = req.query.title;
+    const creator = req.query.creator;
+    const tags = req.query.tags ? []: req.query.tags.split(','); // May change this to not be commas in the future
+    // Assuming for now that the values are valid if not null
+    if (title === null || creator === null) {
+        console.log("Artwork creation failed: one of the queries was null.");
+        res.json({});
+    } else {
+        const client = await connectToDatabase();
+        const artworksDB = client.db("database1").collection("artworks");
+        // _id field will be added automatically
+        const newArtwork = { 
+            // This method will guarantee uniqueness if used consistently, but this method may be changed
+            "id": artworksDB.totalSize(),
+            "title": title,
+            "creator": creator,
+            "tags": tags,
+            "links": []
+        };
+        try {
+            const addResult = await artworksDB.insertOne(newArtwork);
+            res.json(newArtwork);
+        } catch (e) {
+            console.log("An error occurred while trying to make artwork " + newArtwork + ".");
+            res.json({});
+        }
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
@@ -160,8 +187,51 @@ app.post("/users/:user/lists/:listName/", (req, res) => {
 /**
  * Changes the indicated property of the artwork to match what the user inputs.
  */
-app.put("/artworks",(req,res)=>{
-    res.write("artwork put " + req.params.artwork + " called.");
+app.put("/artworks/:artwork", async (req,res) => {
+    console.log("PUT /artworks called on " + req.url + ".");
+    const artwork = parseInt(req.params.id);
+    const key = req.query.key;
+    const type = req.query.type;
+    const value = req.query.value;
+
+    // If we're missing important info, just abort
+    if (key === null || type === null || value === null) {
+        res.json({});
+    // No checking here: assumes the given params are valid, or at the least, not malicious. Will fix in the future
+    } else {
+        const client = await connectToDatabase();
+        const artworksDB = client.db("database1").collection("artworks");
+        const keyValObj = { key: value };
+        let operation;
+
+        // There is likely a better way to do this: reformat this later unless necessary to keep it this way
+        if (type === "set") {
+            updateReq = { $set: keyValObj }
+        } else if (type === "push") {
+            updateReq = { $push: keyValObj }
+        } else if (type === "pop") {
+            updateReq = { $pop: keyValObj }
+        } else if (type === "clear") {
+            updateReq = { $unset: keyValObj }
+        
+            // Invalid operation type
+        } else {
+            console.log("Artwork update failed due to invalid update type. Given type was: " + type);
+            res.json({});
+            updateReq = null;
+        }
+        // After, if the operation is valid...
+        if (updateReq !== null) {
+            try {
+                await artworksDB.updateOne({id: artwork}, updateReq);
+                const updatedArtwork = await artworksDB.findOne({id: artwork});
+                res.json(updatedArtwork);
+            } catch(e) {
+                console.log("There was an error editing artwork" + artwork + ".");
+            }
+        }
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
@@ -178,8 +248,19 @@ app.put("/users/:user/lists/:listName",(req,res)=>{
 /**
  * Removes the artwork with ID {artwork}.
  */
-app.delete("/artworks/:artwork",(req,res)=>{
-    res.write("artwork delete " + req.params.artwork + " called.");
+app.delete("/artworks/:artwork", async (req,res)=>{
+    console.log("DELETE /artworks/:artwork called on artwork: " + req.url + ".");
+    const artwork = parseInt(req.params.artwork);
+    const client = await connectToDatabase();
+    const artworksDB = client.db("database1").collection("artworks");
+    try {
+        const artworkJSON = await artworksDB.findOne({id: artwork});
+        await artworksDB.deleteOne({id: artwork});
+        res.json(artworksJSON);    
+    } catch(e) {
+        res.json({});
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 

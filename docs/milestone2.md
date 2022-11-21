@@ -28,7 +28,7 @@ Common parameters:
 Returns a JSON object with artwork data for artwork ID. Empty object if ID is invalid.
 
 **Example command:**
-`curl -X GET http://the-artchive.herokuapp.com/artworks/2 -H "Content-Type: application.json"`
+`curl -X GET https://the-artchive.herokuapp.com/artworks/2 -H "Content-Type: application.json"`
 
 **Example response:**
 ```
@@ -52,7 +52,7 @@ Returns a JSON object with IDs matching the input results. Search format is:
 - offset - number indicating which result to start displaying at (useful when seperating search results into pages.)
 
 **Example command:**
-`curl -X GET http://the-artchive.herokuapp.com/artworks/search?keywords=The-Waste-Land&posTags=[5] -H "Content-Type: application.json"`
+`curl -X GET https://the-artchive.herokuapp.com/artworks/search?keywords=The-Waste-Land&posTags=[5] -H "Content-Type: application.json"`
 
 **Example response:**
 [
@@ -86,6 +86,21 @@ Creates a new artwork in the database with given user data. Returns the object f
   - creator - ID for creator of this piece.
   - tags - list of numbers seperated by commas, indicating the tags to apply to the artwork upon creation. Will not create the artwork if tags do not exist.
 
+  **Example command:**
+`curl -X POST https://the-artchive.herokuapp.com/artworks?title="The Waste Land"&creator=3&tags=5 -H "Content-Type: application/json"`
+
+**Example response:**
+```
+{
+  "_id": "000000000000000",
+  "id": 2,
+  "title": "The Waste Land",
+  "creator": 3,
+  "tags": [5],
+  "links": [],
+}
+```
+
 #### /users
 Creates a new user with the given username and password. If successful, returns an object for the user. More information in technicalNotes.md.
 Format:
@@ -101,7 +116,7 @@ Creates a list named {listName} attached to {user}. Returns an object with the l
 #### /artworks/{artwork}
 Changes the indicated property of the artwork to match what the user inputs.
   - key - **Required** string which indicates property to change (eg. title, tags).
-  - type - **Required** string which indicates the type of operation on the key. One of "add", "set," or "remove". 
+  - type - **Required** string which indicates the type of operation on the key. One of "set", "push", "pop", or "unset". Note that `remove` affects the field, while the others merely affect values. Future modifications will allow more complicated operations. 
   - value - **Required** string which indicates what value to set the key to. This should match directly how it should be stored in the database: eg., if the key holds an ID, this value should be an ID. If the key holds a link, the value should be a link.
 
 #### /users/{user}
