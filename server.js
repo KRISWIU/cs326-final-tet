@@ -53,7 +53,7 @@ app.get("/artworks/:artwork", async (req, res) => {
     const client = await connectToDatabase();
     console.log("Client is: " + client);
     const artworksDB = client.db("database1").collection("artworks");
-    const queryResult = await artworksDB.findOne({id: req.params.artwork });
+    const queryResult = await artworksDB.findOne({id: req.params.artwork});
     console.log(queryResult);
     if (queryResult === null) {
         console.log("Requested artwork not found.");
@@ -189,18 +189,46 @@ app.post("/users/:user/lists/:listName/", (req, res) => {
 app.put("/artworks/:artwork", async (req,res) => {
     console.log("PUT /artworks called on " + req.url + ".");
     const artwork = req.params.id;
-    const client = await connectToDatabase();
-    const artworksDB = client.db("database1").collection("artworks");
-    // Next two lines should technically be uncessary, but could be wrong
-    // const keys = Object.keys(req.query);
-    // console.log("Query keys are: " + keys);
-    
-    try {
-        // Have to reformat the req.query: updating does not just take in JSON objects
-        await artworksDB.updateOne( { id: artwork },  req.query );
-        res.json()
-    } catch {
-        console.log("There was an error editing artwork" + artwork);
+    const key = req.query.key;
+    const type = req.query.type;
+    const value = req.query.value;
+
+    // If we're missing important info, just abort
+    if (key === null || type === null || value === null) {
+        res.json({});
+    // No checking here: assumes the given params are valid, or at the least, not malicious. Will fix in the future
+    } else {
+        const client = await connectToDatabase();
+        const artworksDB = client.db("database1").collection("artworks");
+        const keyValObj = { key: value };
+        let operation;
+
+        // There is likely a better way to do this: reformat this later unless necessary to keep it this way
+        if (type === "set") {
+            updateReq = { $set: keyValObj }
+        } else if (type === "push") {
+            updateReq = { $push: keyValObj }
+        } else if (type === "pop") {
+            updateReq = { $pop: keyValObj }
+        } else if (type === "clear") {
+            updateReq = { $unset: keyValObj }
+        
+            // Invalid operation type
+        } else {
+            console.log("Artwork update failed due to invalid update type. Given type was: " + type);
+            res.json({});
+            updateReq = null;
+        }
+        // After, if the operation is valid...
+        if (updateReq !== null) {
+            try {
+                await artworksDB.updateOne({id: artwork}, updateReq);
+                const updatedArtwork = await artworksDB.findOne({id: artwork});
+                res.json(updatedArtwork);
+            } catch(e) {
+                console.log("There was an error editing artwork" + artwork + ".");
+            }
+        }
     }
     await disconnectFromDatabase(client);
     res.end();
@@ -219,8 +247,18 @@ app.put("/users/:user/lists/:listName",(req,res)=>{
 /**
  * Removes the artwork with ID {artwork}.
  */
-app.delete("/artworks/:artwork",(req,res)=>{
-    res.write("artwork delete " + req.params.artwork + " called.");
+app.delete("/artworks/:artwork", async (req,res)=>{
+    console.log("DELETE /artworks/:artwork called on artwork: " + req.url + ".");
+    const client = await connectToDatabase();
+    const artworksDB = client.db("database1").collection("artworks");
+    try {
+        const artworkJSON = await artworksDB.findOne({id: req.params.artwork});
+        await artworksDB.deleteOne({id: req.params.artwork});
+        res.json(artworksJSON);    
+    } catch(e) {
+        res.json({});
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
