@@ -1,5 +1,5 @@
  const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 // Start up server
 const app = express();
@@ -52,8 +52,8 @@ app.get("/artworks/:artwork", async (req, res) => {
     console.log("GET /artworks/:artwork called on " + req.params.artwork + ".");
     const client = await connectToDatabase();
     console.log("Client is: " + client);
-    const artworks = client.db("database1").collection("artworks");
-    const queryResult = await artworks.findOne({id: req.params.artwork });
+    const artworksDB = client.db("database1").collection("artworks");
+    const queryResult = await artworksDB.findOne({id: req.params.artwork });
     console.log(queryResult);
     if (queryResult === null) {
         console.log("Requested artwork not found.");
@@ -62,8 +62,6 @@ app.get("/artworks/:artwork", async (req, res) => {
         console.log("Successfully retrieved artwork. Artwork is: " + JSON.stringify(queryResult));
         res.json(queryResult);
     }
-    // res.send("Getting artwork " + req.params.artwork + ":");
-    // res.write("artwork retrieval on artwork " + req.params.artwork + " called.");
     await disconnectFromDatabase(client);
     res.end();
     console.log("Response successfully delivered and connection ended.");
@@ -129,8 +127,36 @@ app.get("/tags/creators/:creator", (req,res)=>{
  * Creates a new artwork in the database with given user data. 
  * Returns the object for the new artwork if the operation was successful.
  */
-app.post("/artworks", (req, res) => {
-    res.json({ artwork: 1234567890, creator: 1234567890, msg: "Artwork creation called." });
+app.post("/artworks", async (req, res) => {
+    console.log("POST /artworks called on " + req.url + ".");
+    const title = req.query.title;
+    const creator = req.query.creator;
+    const tags = req.query.tags ? []: req.query.tags.split(','); // May change this to not be commas in the future
+    // Assuming for now that the values are valid if not null
+    if (title === null || creator === null) {
+        console.log("Artwork creation failed: one of the queries was null.");
+        res.json({});
+    } else {
+        const client = await connectToDatabase();
+        const artworksDB = client.db("database1").collection("artworks");
+        // _id field will be added automatically
+        const newArtwork = { 
+            // This method will guarantee uniqueness if used consistently, but this method may be changed
+            "id": artworksDB.totalSize(),
+            "title": title,
+            "creator": creator,
+            "tags": tags,
+            "links": []
+        };
+        try {
+            const addResult = await artworksDB.insertOne(newArtwork);
+            res.json(newArtwork);
+        } catch (e) {
+            console.log("An error occurred while trying to make artwork " + newArtwork + ".");
+            res.json({});
+        }
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
@@ -160,8 +186,23 @@ app.post("/users/:user/lists/:listName/", (req, res) => {
 /**
  * Changes the indicated property of the artwork to match what the user inputs.
  */
-app.put("/artworks",(req,res)=>{
-    res.write("artwork put " + req.params.artwork + " called.");
+app.put("/artworks/:artwork", async (req,res) => {
+    console.log("PUT /artworks called on " + req.url + ".");
+    const artwork = req.params.id;
+    const client = await connectToDatabase();
+    const artworksDB = client.db("database1").collection("artworks");
+    // Next two lines should technically be uncessary, but could be wrong
+    // const keys = Object.keys(req.query);
+    // console.log("Query keys are: " + keys);
+    
+    try {
+        // Have to reformat the req.query: updating does not just take in JSON objects
+        await artworksDB.updateOne( { id: artwork },  req.query );
+        res.json()
+    } catch {
+        console.log("There was an error editing artwork" + artwork);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 

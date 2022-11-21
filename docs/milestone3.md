@@ -16,10 +16,10 @@ This collection is used to store data for artworks. Each document in this databa
 - `creator` - int for the artwork creator's ID. May be rewritten to be an array, to allow for multiple creators. 0 indicates no creator or an anonymous creator.
 - `tags` - int array for holding the IDs of the tags applied to this artwork.
 - `links` - string array for holding URLs related to the artwork.
-- `dateAdded` - string indicating when the artwork was added, in format mm/dd/yyyy.
 
 **Optional fields:**
 - `img` - String URL to the default img displayed for this artwork.
+- `dateAdded` - string indicating when the artwork was added, in format mm/dd/yyyy.
 
 *Example document:*
 ```
