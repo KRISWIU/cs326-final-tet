@@ -28,7 +28,7 @@ Common parameters:
 Returns a JSON object with artwork data for artwork ID. Empty object if ID is invalid.
 
 **Example command:**
-`curl -X GET http://the-artchive.herokuapp.com/artworks/2 -H "Content-Type: application.json"`
+`curl -X GET https://the-artchive.herokuapp.com/artworks/2 -H "Content-Type: application.json"`
 
 **Example response:**
 ```
@@ -52,7 +52,7 @@ Returns a JSON object with IDs matching the input results. Search format is:
 - offset - number indicating which result to start displaying at (useful when seperating search results into pages.)
 
 **Example command:**
-`curl -X GET http://the-artchive.herokuapp.com/artworks/search?keywords=The-Waste-Land&posTags=[5] -H "Content-Type: application.json"`
+`curl -X GET https://the-artchive.herokuapp.com/artworks/search?keywords=The-Waste-Land&posTags=[5] -H "Content-Type: application.json"`
 
 **Example response:**
 [
@@ -85,6 +85,21 @@ Creates a new artwork in the database with given user data. Returns the object f
   - title - string of this artwork's title. Can be blank, but will need other data if left blank.
   - creator - ID for creator of this piece.
   - tags - list of numbers seperated by commas, indicating the tags to apply to the artwork upon creation. Will not create the artwork if tags do not exist.
+
+  **Example command:**
+`curl -X POST https://the-artchive.herokuapp.com/artworks?title="The Waste Land"&creator=3&tags=5 -H "Content-Type: application/json"`
+
+**Example response:**
+```
+{
+  "_id": "000000000000000",
+  "id": 2,
+  "title": "The Waste Land",
+  "creator": 3,
+  "tags": [5],
+  "links": [],
+}
+```
 
 #### /users
 Creates a new user with the given username and password. If successful, returns an object for the user. More information in technicalNotes.md.

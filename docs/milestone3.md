@@ -104,6 +104,12 @@ None as of right now.
 }
 ```
 
+## Currently working features:
+
+Currently, our database works fine and has some basic data, although not all operations are implemented on the server. We should support GET, POST, PUT, and DELETE for artworks, but testing them will have to be done through CURL or some other kind of console. Examples of everything and how to call them are either included in here or milestone2.md (which has been updated but not finished since the last milestone due date.)
+
+Heroku currently has issues (we are mainly struggling with switching pages,) but this may be resolved soon.
+
 
 # Division of Labor
 - **Jacob Gray - PineVoid** - Database creation, population, and documentation. Also revised documentation in milestone2.md and technicalNotes. Devised the overall database structure and document structure. Wrote small segments of database code (particularly initial code for `GET artworks/:artwork` in server.js).

@@ -1,7 +1,7 @@
 //import * as addpage from 'gotoPages.js';
 
 // This is the version for heroku: change this to false if testing locally.
-const isLocalVersion = false;
+const isLocalVersion = true;
 let baseURL = "";
 if (isLocalVersion === false) { 
     baseURL = "https://the-artchive.herokuapp.com";
@@ -58,9 +58,8 @@ window.onload = () => {
 
         (async () => {
             const returnObj = await makeRequest(URL, "POST"); 
-            console.log("The response object is: " + JSON.stringify(returnObj)); })();  
+            console.log("The response object is: " + JSON.stringify(returnObj)); })();
     });
 
-    document.getElementById("siteName").addEventListener("click", gotoMainPage());
-    document.getElementById('addWork').addEventListener('click', gotoAddWork());
+    
 };

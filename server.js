@@ -4,7 +4,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 // Start up server
 const app = express();
 console.log("Server successfully started.");
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 console.log("Selected port number is: " + port);
 
 // Function for connecting to database
@@ -50,10 +50,11 @@ console.log("Server has served basic pages.");
  */
 app.get("/artworks/:artwork", async (req, res) => {
     console.log("GET /artworks/:artwork called on " + req.params.artwork + ".");
+    const artwork = parseInt(req.params.artwork);
     const client = await connectToDatabase();
     console.log("Client is: " + client);
     const artworksDB = client.db("database1").collection("artworks");
-    const queryResult = await artworksDB.findOne({id: req.params.artwork});
+    const queryResult = await artworksDB.findOne({id: artwork});
     console.log(queryResult);
     if (queryResult === null) {
         console.log("Requested artwork not found.");
@@ -188,7 +189,7 @@ app.post("/users/:user/lists/:listName/", (req, res) => {
  */
 app.put("/artworks/:artwork", async (req,res) => {
     console.log("PUT /artworks called on " + req.url + ".");
-    const artwork = req.params.id;
+    const artwork = parseInt(req.params.id);
     const key = req.query.key;
     const type = req.query.type;
     const value = req.query.value;
@@ -249,11 +250,12 @@ app.put("/users/:user/lists/:listName",(req,res)=>{
  */
 app.delete("/artworks/:artwork", async (req,res)=>{
     console.log("DELETE /artworks/:artwork called on artwork: " + req.url + ".");
+    const artwork = parseInt(req.params.artwork);
     const client = await connectToDatabase();
     const artworksDB = client.db("database1").collection("artworks");
     try {
-        const artworkJSON = await artworksDB.findOne({id: req.params.artwork});
-        await artworksDB.deleteOne({id: req.params.artwork});
+        const artworkJSON = await artworksDB.findOne({id: artwork});
+        await artworksDB.deleteOne({id: artwork});
         res.json(artworksJSON);    
     } catch(e) {
         res.json({});
