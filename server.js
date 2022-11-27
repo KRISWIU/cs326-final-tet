@@ -44,9 +44,8 @@ console.log("Server has served basic pages.");
 //  ###  GET  ###  \\
 
 /**
- * Returns a JSON object with artwork data for artwork ID. 
- * null if ID is invalid. Refer to technicalNotes.md 
- * for information about what this will look like.
+ * Returns a JSON object with artwork data for the artwork with the corresponding ID. 
+ * Returns null if invalid ID.
  */
 app.get("/artworks/:artwork", async (req, res) => {
     console.log("GET /artworks/:artwork called on " + req.params.artwork + ".");
@@ -69,7 +68,8 @@ app.get("/artworks/:artwork", async (req, res) => {
 });
 
 /**
- * Returns a JSON array with IDs matching the input results.
+ * Returns a JSON array with IDs matching the input results. 
+ * WIP
  */
 app.get("/artworks/search", async (req, res) => {
     console.log("GET /artworks/search called on " + req.url + ".");
@@ -79,27 +79,52 @@ app.get("/artworks/search", async (req, res) => {
         // No neg tags as of right now
     const limit = req.query.limit === null ? 5: req.query.limit;
     const offset = req.query.offset === null ? 0: req.query.offset;
-    // Exact database operations can wait: implement some dummy operations for now
+    const client = await connectToDatabase();
+    artworksDB = client.db("database1").collection("artworks");
+    
+    // !! Database operations not implemented. WIP !!
     res.json([1, 2, 3, 4, 5]);
     console.log("Operation successful.");
     res.end();
 });
 
 /**
- * Returns the ID associated with this username, as well as other potentially 
- * important information.
+ * Returns the user database object associated with this username.
+ * Returns null if invalid username.
  */
-app.get("/users/:user",  (req, res) => {
+app.get("/users/:user", async (req, res) => {
     console.log("GET /users/:user called on " + req.params.user + ".");
+    const client = await connectToDatabase();
+    usersDB = client.db("database1").collection("users");
+    const queryResult = await usersDB.findOne({username: req.params.user});
+    if (queryResult === null) {
+        console.log("Requested user not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved user. User is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
 /**
- * Returns an object summarizing basic information of all lists for this user.
+ * Returns a JSON object with all list names and their sizes for this user.
  * Does not return the lists themselves.
  */
-app.get("/users/:user/lists",  (req, res) => {
-    res.write("user's list of " + req.params.user +" retrieval called");
+app.get("/users/:user/lists", async (req, res) => {
+    res.write("GET /users/:user/lists called on " + req.params.user + ".");
+    const client = await connectToDatabase();
+    usersDB = client.db("database1").collection("users");
+    const queryResult = await usersDB.findOne({id: req.params.user});
+    if (queryResult === null) {
+        console.log("Requested user not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved user. User is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 

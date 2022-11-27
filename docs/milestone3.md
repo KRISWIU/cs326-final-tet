@@ -85,10 +85,9 @@ None as of right now.
 This collection is used to store user data. Each user has their own unique document, with the following fields:
 
 **Required fields:**
-- `id` - int used to uniquely refer to this user.
-- `username` - string used for when the user logs in. Must also be unique.
+- `username` - string which effectively serves as the user's id. Required for login and must be unique.
 - `password` - string used to authenticate the user. Stored as a hashed and salted string.
-- `lists` - 2D int array storing (at the highest level) lists, and then the IDs of the works in each list.
+- `lists` - object array storing list objects. Each list object has a `name` property with a unique name, and a `artworks` property, which is an array containing the int IDs of the artworks in the list.
 
 **Optional fields:**
 None as of right now.
@@ -97,10 +96,21 @@ None as of right now.
 ```
 {
     "_id": "000000000000000",
-    "id": 1,
     "username": "test",
-    "password": "password"  // Will ordinarily be hashed, but not implemented as of now
-    "lists": [ [1, 2], [] ]
+    "password": "password123",  // Will ordinarily be hashed, but not implemented as of now
+    "lists": [
+        { 
+            "name": "Favorites", 
+            "artworks": [
+                1, 
+                2
+            ] 
+        }, 
+        { 
+            "name": "new list", 
+            "artworks": [] 
+        }
+    ]
 }
 ```
 
