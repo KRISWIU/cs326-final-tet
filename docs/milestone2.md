@@ -12,10 +12,10 @@ Our API will be a REST API, with the following methods:
 All methods will return JSON objects with information about the request. In the event of failure or something not existing, an empty JSON object will be returned instead.
 
 Common parameters:
-- artwork - integer artwork id. Unique for each artwork.
-- user - string username for each user. Unique.
-- list - string username for this list. Unqiue for each user.
-- tag - integer tag ID. Unique for each tag.
+- `artwork` - integer artwork id. Unique for each artwork.
+- `user` - string username for each user. Unique.
+- `list` - string username for this list. Unqiue for each user.
+- `tag` - integer tag ID. Unique for each tag.
 
 
 # Endpoints
@@ -55,11 +55,13 @@ Returns a JSON object with IDs matching the input results. Search format is:
 `curl -X GET https://the-artchive.herokuapp.com/artworks/search?keywords=The-Waste-Land&posTags=[5] -H "Content-Type: application.json"`
 
 **Example response:**
+```
 [
   { artwork1 },
   { artwork2 },
   { artwork3 }
 ]
+```
 
 ### /users/{user}
 Returns the user database object associated with this username. May be changed to be more restricted in scope.
@@ -88,6 +90,7 @@ Returns the user database object associated with this username. May be changed t
     ]
 }
 ```
+
 #### /users/{user}/lists
 Returns an array (in JSON form) of objects, with each object corresponding to a list. Each object contains a string `name` propety as well as an int `size` property. 
 Does not return the lists themselves. Returns an empty array if the user is invalid or there are no lists.
@@ -131,16 +134,12 @@ Returns null if the list or user doesn't exist.
 Returns a JSON object with field `id` containing the ID for this tag.
 Returns null if there is no tag with this name.
 
-`curl -X GET https://the-artchive.herokuapp.com/users/CoolGuy3/Favorites -H "Content-Type: application.json"`
+`curl -X GET https://the-artchive.herokuapp.com/tags/poem -H "Content-Type: application.json"`
 
 **Example response:**
 ```
 { 
-    "name": "Favorites", 
-    "artworks": [
-        1, 
-        2
-    ] 
+    "id": 5
 }
 ```
 

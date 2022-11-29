@@ -111,18 +111,27 @@ app.get("/users/:user", async (req, res) => {
 /**
  * Returns a JSON object with all list names and their sizes for this user.
  * Does not return the lists themselves.
+ * 
+ * This function can likely be optimized by removing the need for the database to send the actual lists over 
+ * (it may be possible to format a query which just returns the names and sizes of the lists, saving potentially
+ * huge lists from being transmitted for no reason.)
  */
 app.get("/users/:user/lists", async (req, res) => {
-    res.write("GET /users/:user/lists called on " + req.params.user + ".");
+    console.log("GET /users/:user/lists called on " + req.params.user + ".");
     const client = await connectToDatabase();
-    usersDB = client.db("database1").collection("users");
-    const queryResult = await usersDB.findOne({id: req.params.user});
+    const usersDB = client.db("database1").collection("users");
+    const queryResult = await usersDB.findOne({id: req.params.user}, { _id: 0, lists: 1 });
     if (queryResult === null) {
         console.log("Requested user not found.");
         res.send(null);
     } else {
-        console.log("Successfully retrieved user. User is: " + JSON.stringify(queryResult));
-        res.json(queryResult);
+        console.log("Successfully retrieved user and lists. User is: " + JSON.stringify(queryResult));
+        let returnArr = [];
+        // Gets the name and size of each list and appends it to returnArr
+        queryResult.lists.forEach( (listObj) => {
+            returnArr.append({ "name": listObj.name, "size": listObj.artworks.size });
+        }); 
+        res.json(returnArr);
     }
     await disconnectFromDatabase(client);
     res.end();
@@ -131,8 +140,19 @@ app.get("/users/:user/lists", async (req, res) => {
 /**
  * Returns the ID of the tag with the given name, if it exists.
  */
-app.get("/tags/:tagName", (req,res)=>{
-    res.write("tag id of  " + req.params.tagName + " retrieval called");
+app.get("/tags/:tagName", async (req, res) => {
+    console.log("GET /tags/:tagName called on " + req.params.tagName + ".");
+    const client = await connectToDatabase();
+    const tagsDB = client.db("database1").collection("tags");
+    queryResult = await tagsDB.findOne({name: req.params.tagName}, { _id: 0, id: 1 });
+    if (queryResult === null) {
+        console.log("Requested tag not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved tag object. Tag object is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
@@ -140,8 +160,19 @@ app.get("/tags/:tagName", (req,res)=>{
  * Returns the ID of the creator with the given name,
  *  if they exist. (May not implement this.)
  */
-app.get("/tags/creators/:creator", (req,res)=>{
-    res.write("creator ID of " + req.params.creator + " retriveal called");
+app.get("/tags/creators/:creator", async (req, res) => {
+    console.log("GET /tags/creators/:creator called on " + req.params.creator + ".");
+    const client = await connectToDatabase();
+    const creatorsDB = client.db("database1").collection("creators");
+    queryResult = await creatorsDB.findOne({id: req.params.creator}, { _id: 0, id: 1 });
+    if (queryResult === null) {
+        console.log("Requested creator not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved creator. Creator is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
