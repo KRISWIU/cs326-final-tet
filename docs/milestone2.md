@@ -143,8 +143,24 @@ Returns null if there is no tag with this name.
 }
 ```
 
-#### /tags/creators/{creator}
-Returns the ID of the creator with the given name, if they exist. (May not implement this.)
+#### /tags/{tagID}
+Returns the database JSON object corresponding to this tag, given the id.
+Returns null if there is no tag with this id.
+
+`curl -X GET https://the-artchive.herokuapp.com/tags/5 -H "Content-Type: application.json"`
+
+**Example response:**
+```
+{
+    "_id": "000000000000000",
+    "id": 5,
+    "name": "poem",
+    "works": [2, 3, 4]
+}
+```
+
+#### /creators/{creator}
+Returns the ID of the creator with the given name, if they exist.
 
 
 ## POST
