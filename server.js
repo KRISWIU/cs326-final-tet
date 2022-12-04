@@ -160,8 +160,8 @@ app.get("/tags/:tagName", async (req, res) => {
  * Returns the ID of the creator with the given name,
  *  if they exist. (May not implement this.)
  */
-app.get("/tags/creators/:creator", async (req, res) => {
-    console.log("GET /tags/creators/:creator called on " + req.params.creator + ".");
+app.get("/creators/:creator", async (req, res) => {
+    console.log("GET /creators/:creator called on " + req.params.creator + ".");
     const client = await connectToDatabase();
     const creatorsDB = client.db("database1").collection("creators");
     queryResult = await creatorsDB.findOne({id: req.params.creator}, { _id: 0, id: 1 });
