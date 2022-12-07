@@ -1,4 +1,5 @@
- const express = require('express');
+const { json } = require('express');
+const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
 
 // Start up server
@@ -44,9 +45,8 @@ console.log("Server has served basic pages.");
 //  ###  GET  ###  \\
 
 /**
- * Returns a JSON object with artwork data for artwork ID. 
- * null if ID is invalid. Refer to technicalNotes.md 
- * for information about what this will look like.
+ * Returns a JSON object with artwork data for the artwork with the corresponding ID. 
+ * Returns null if invalid ID.
  */
 app.get("/artworks/:artwork", async (req, res) => {
     console.log("GET /artworks/:artwork called on " + req.params.artwork + ".");
@@ -69,7 +69,8 @@ app.get("/artworks/:artwork", async (req, res) => {
 });
 
 /**
- * Returns a JSON array with IDs matching the input results.
+ * Returns a JSON array with IDs matching the input results. 
+ * WIP
  */
 app.get("/artworks/search", async (req, res) => {
     console.log("GET /artworks/search called on " + req.url + ".");
@@ -79,35 +80,80 @@ app.get("/artworks/search", async (req, res) => {
         // No neg tags as of right now
     const limit = req.query.limit === null ? 5: req.query.limit;
     const offset = req.query.offset === null ? 0: req.query.offset;
-    // Exact database operations can wait: implement some dummy operations for now
+    const client = await connectToDatabase();
+    artworksDB = client.db("database1").collection("artworks");
+    
+    // !! Database operations not implemented. WIP !!
     res.json([1, 2, 3, 4, 5]);
     console.log("Operation successful.");
     res.end();
 });
 
 /**
- * Returns the ID associated with this username, as well as other potentially 
- * important information.
+ * Returns the user database object associated with this username.
+ * Returns null if invalid username.
  */
-app.get("/users/:user",  (req, res) => {
+app.get("/users/:user", async (req, res) => {
     console.log("GET /users/:user called on " + req.params.user + ".");
+    const client = await connectToDatabase();
+    usersDB = client.db("database1").collection("users");
+    const queryResult = await usersDB.findOne({username: req.params.user});
+    if (queryResult === null) {
+        console.log("Requested user not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved user. User is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
 /**
- * Returns an object summarizing basic information of all lists for this user.
+ * Returns a JSON object with all list names and their sizes for this user.
  * Does not return the lists themselves.
+ * 
+ * This function can likely be optimized by removing the need for the database to send the actual lists over 
+ * (it may be possible to format a query which just returns the names and sizes of the lists, saving potentially
+ * huge lists from being transmitted for no reason.)
  */
-app.get("/users/:user/lists",  (req, res) => {
-    res.write("user's list of " + req.params.user +" retrieval called");
+app.get("/users/:user/lists", async (req, res) => {
+    console.log("GET /users/:user/lists called on " + req.params.user + ".");
+    const client = await connectToDatabase();
+    const usersDB = client.db("database1").collection("users");
+    const queryResult = await usersDB.findOne({id: req.params.user}, { _id: 0, lists: 1 });
+    if (queryResult === null) {
+        console.log("Requested user not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved user and lists. User is: " + JSON.stringify(queryResult));
+        let returnArr = [];
+        // Gets the name and size of each list and appends it to returnArr
+        queryResult.lists.forEach( (listObj) => {
+            returnArr.append({ "name": listObj.name, "size": listObj.artworks.size });
+        }); 
+        res.json(returnArr);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
 /**
  * Returns the ID of the tag with the given name, if it exists.
  */
-app.get("/tags/:tagName", (req,res)=>{
-    res.write("tag id of  " + req.params.tagName + " retrieval called");
+app.get("/tags/:tagName", async (req, res) => {
+    console.log("GET /tags/:tagName called on " + req.params.tagName + ".");
+    const client = await connectToDatabase();
+    const tagsDB = client.db("database1").collection("tags");
+    queryResult = await tagsDB.findOne({name: req.params.tagName}, { _id: 0, id: 1 });
+    if (queryResult === null) {
+        console.log("Requested tag not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved tag object. Tag object is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
@@ -115,8 +161,19 @@ app.get("/tags/:tagName", (req,res)=>{
  * Returns the ID of the creator with the given name,
  *  if they exist. (May not implement this.)
  */
-app.get("/tags/creators/:creator", (req,res)=>{
-    res.write("creator ID of " + req.params.creator + " retriveal called");
+app.get("/creators/:creator", async (req, res) => {
+    console.log("GET /creators/:creator called on " + req.params.creator + ".");
+    const client = await connectToDatabase();
+    const creatorsDB = client.db("database1").collection("creators");
+    queryResult = await creatorsDB.findOne({id: req.params.creator}, { _id: 0, id: 1 });
+    if (queryResult === null) {
+        console.log("Requested creator not found.");
+        res.send(null);
+    } else {
+        console.log("Successfully retrieved creator. Creator is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
@@ -151,7 +208,7 @@ app.post("/artworks", async (req, res) => {
         };
         try {
             const addResult = await artworksDB.insertOne(newArtwork);
-            res.json(newArtwork);
+            res.json(addResult);
         } catch (e) {
             console.log("An error occurred while trying to make artwork " + newArtwork + ".");
             res.json({});
@@ -166,17 +223,92 @@ app.post("/artworks", async (req, res) => {
  * If successful, returns an object for the user.
  * More information in technicalNotes.md
  */
-app.post("/users/", (req, res) => {
-    res.write("artwork creation " + req.params.artwork + " called.");
+app.post("/users", async (req, res) => {
+    console.log("POST /users called for username " + req.query.username + ".");
+    const username = req.query.username ?? '';
+    const password = req.query.password ?? '';
+    // Verify username and password not blank
+    // Test these later: they may be flawed.
+    const specialCharRegex = /!@#\$%\^&\*\(\)-_\+=\[\]:;,./;
+    const invalidCharRegex = /^[\w!@#\$%\^&\*\(\)-_\+=\[\]:;,.]/;
+    
+    // specialCharsArr is not used here: will be used for client-side password-checking.
+    const specialCharsArr = [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', 
+            '[', ']', ':', ';', ',', '.']
+    if (username === '' || password === '') {
+        res.json({error: "Username or password are blank!"});
+        res.end();
+        return;
+    // Verify password is strong enough
+    } else if (
+            password.length < 8 ||
+            password.match(specialCharRegex) === "" ||
+            password.match(/\d/) === "" ||
+            password.match(/[a-zA-Z]/) === "" ||
+            password.match(invalidCharRegex) !== "" ||
+            // Check password has no invalid chars
+            password.split('').every( (letter) => { return ; }) ||
+            password.length > 50) {
+        res.json({error: "Password is not strong enough or uses invalid characters."});
+        res.end();
+        return;    
+    // Check if username is valid
+    } else if (username.match(invalidCharRegex) !== "" || username.length > 50) {
+        res.json({error: "Username has an invalid character or is too long."});
+        res.end();
+    }
+
+    // Check if the username is already taken: might want to turn this into a function
+    const client = await connectToDatabase();
+    const usersDB = client.db("database1").collection("users");
+    const isDuplicateUser = Object.keys(
+            await usersDB.findOne({username: username})).length === 0;
+    if (isDuplicateUser) {
+        res.json({error: "Username is already taken."});
+        await disconnectFromDatabase(client);
+        res.end();
+        return;
+    }
+
+    // Username and password are valid: add the user to the database
+    // PASSWORD IS NOT CURRENTLY BEING HASHED: FIX THIS LATER
+    try { 
+        const newUser = await usersDB.insertOne({ username: username, password: password })
+        res.json(newUser);
+    } catch (e) {
+        res.json("Error: the user could not be added to the database.");
+    }
+    await disconnectFromDatabase(client);
     res.end();
 });
 
 /**
  * Creates a list named {listName} attached to {user}. 
- * Returns an object with the list ID.
+ * Returns an object with the list name.
  */
-app.post("/users/:user/lists/:listName/", (req, res) => {
-    res.write("artwork creation " + req.params.artwork + " called.");
+app.post("/users/:user/lists/:listName", async (req, res) => {
+    const username = req.params.user;
+    const listName = req.params.listName;
+    console.log("POST /users/:user/lists/:listName called on user " + 
+            user + " with list " + listName + ".");
+    const client = await connectToDatabase();
+    const usersDB = client.db("database1").collection("users");
+    // Can probably refine this query to determine existence of name: optimize later
+    const userLists = await usersDB.findOne({username: username}, {lists: 1});
+    // Verify this user exists
+    if (userLists === null) {
+        res.json({error: "List creation failed: this user does not exist."})
+    }
+    // Verify this list name is not already taken:
+    if (userLists.some((list) => { list.name === listName })) {
+        res.json({error: "List creation failed: this user already has a list with this name."});
+    } else {
+        // Add this new list to this user
+        await usersDB.updateOne(
+                {username: user}, 
+                {$push: {lists: {name: listName, artworks: []}}});
+        res.json({name: listName});
+    }
     res.end();
 });
 
@@ -204,7 +336,7 @@ app.put("/artworks/:artwork", async (req,res) => {
         const keyValObj = { key: value };
         let operation;
 
-        // There is likely a better way to do this: reformat this later unless necessary to keep it this way
+        // Parse the type of operation
         if (type === "set") {
             updateReq = { $set: keyValObj }
         } else if (type === "push") {
@@ -212,7 +344,7 @@ app.put("/artworks/:artwork", async (req,res) => {
         } else if (type === "pop") {
             updateReq = { $pop: keyValObj }
         } else if (type === "clear") {
-            updateReq = { $unset: keyValObj }
+            updateReq = { $unset: keyValObj } // Update this: having a value doesn't make much sense
         
             // Invalid operation type
         } else {
@@ -238,8 +370,16 @@ app.put("/artworks/:artwork", async (req,res) => {
 /**
  * Alters a list by adding or removing an artwork from it. Returns the list ID.
  */
-app.put("/users/:user/lists/:listName",(req,res)=>{
-    res.write("user's list put " + req.params.user + " called.");
+app.put("/users/:user/lists/:listName", async (req, res) => {
+    const user = req.params.user;
+    const listName = req.params.listName;
+    console.log("PUT /users/:user/lists/:listName called on user " + 
+            user + " and list " + listName);
+    const client = await connectToDatabase();
+    const usersDB = client.db("database") 
+    // Check for the existence of the user and list
+    // WIP
+
     res.end();
 });
 
