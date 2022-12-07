@@ -123,3 +123,5 @@ Heroku currently has issues (we are mainly struggling with switching pages,) but
 
 # Division of Labor
 - **Jacob Gray - PineVoid** - Database creation, population, and documentation. Also revised documentation in milestone2.md and technicalNotes. Devised the overall database structure and document structure. Wrote small segments of database code (particularly initial code for `GET artworks/:artwork` in server.js).
+- **Yuxiang Nian - MacNian** - Login page redesign, add new fucntion in addtopage.js; Change some small segments in main.js, index.html and login.html to implement the change page function.
+- **Zhenduo Wang - KRISWIU** - Adding important event handlers in main.js and messing with heroku to attempt to get page switching to work. Also attempted to help with writing database code in server.js.
