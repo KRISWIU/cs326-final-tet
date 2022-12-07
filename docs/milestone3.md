@@ -87,7 +87,7 @@ This collection is used to store user data. Each user has their own unique docum
 **Required fields:**
 - `username` - string which effectively serves as the user's id. Required for login and must be unique.
 - `password` - string used to authenticate the user. Stored as a hashed and salted string.
-- `lists` - object array storing list objects. Each list object has a `name` property with a unique name, and a `artworks` property, which is an array containing the int IDs of the artworks in the list.
+- `lists` - object array storing list objects. Each list object has a `name` property with a unique name, and an `artworks` property, which is an array containing the int IDs of the artworks in the list.
 
 **Optional fields:**
 None as of right now.

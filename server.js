@@ -1,3 +1,4 @@
+const { json } = require('express');
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
 
@@ -207,7 +208,7 @@ app.post("/artworks", async (req, res) => {
         };
         try {
             const addResult = await artworksDB.insertOne(newArtwork);
-            res.json(newArtwork);
+            res.json(addResult);
         } catch (e) {
             console.log("An error occurred while trying to make artwork " + newArtwork + ".");
             res.json({});
@@ -231,7 +232,7 @@ app.post("/users", async (req, res) => {
     const specialCharRegex = /!@#\$%\^&\*\(\)-_\+=\[\]:;,./;
     const invalidCharRegex = /^[\w!@#\$%\^&\*\(\)-_\+=\[\]:;,.]/;
     
-    // specialCnharsArr is not used here: will be used for client-side password-checking.
+    // specialCharsArr is not used here: will be used for client-side password-checking.
     const specialCharsArr = [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', 
             '[', ']', ':', ';', ',', '.']
     if (username === '' || password === '') {
@@ -271,17 +272,43 @@ app.post("/users", async (req, res) => {
 
     // Username and password are valid: add the user to the database
     // PASSWORD IS NOT CURRENTLY BEING HASHED: FIX THIS LATER
-    await usersDB.insertOne({ username: username, password: password} );
+    try { 
+        const newUser = await usersDB.insertOne({ username: username, password: password })
+        res.json(newUser);
+    } catch (e) {
+        res.json("Error: the user could not be added to the database.");
+    }
     await disconnectFromDatabase(client);
     res.end();
 });
 
 /**
  * Creates a list named {listName} attached to {user}. 
- * Returns an object with the list ID.
+ * Returns an object with the list name.
  */
-app.post("/users/:user/lists/:listName/", (req, res) => {
-    res.write("artwork creation " + req.params.artwork + " called.");
+app.post("/users/:user/lists/:listName", async (req, res) => {
+    const username = req.params.user;
+    const listName = req.params.listName;
+    console.log("POST /users/:user/lists/:listName called on user " + 
+            user + " with list " + listName + ".");
+    const client = await connectToDatabase();
+    const usersDB = client.db("database1").collection("users");
+    // Can probably refine this query to determine existence of name: optimize later
+    const userLists = await usersDB.findOne({username: username}, {lists: 1});
+    // Verify this user exists
+    if (userLists === null) {
+        res.json({error: "List creation failed: this user does not exist."})
+    }
+    // Verify this list name is not already taken:
+    if (userLists.some((list) => { list.name === listName })) {
+        res.json({error: "List creation failed: this user already has a list with this name."});
+    } else {
+        // Add this new list to this user
+        await usersDB.updateOne(
+                {username: user}, 
+                {$push: {lists: {name: listName, artworks: []}}});
+        res.json({name: listName});
+    }
     res.end();
 });
 
@@ -309,7 +336,7 @@ app.put("/artworks/:artwork", async (req,res) => {
         const keyValObj = { key: value };
         let operation;
 
-        // There is likely a better way to do this: reformat this later unless necessary to keep it this way
+        // Parse the type of operation
         if (type === "set") {
             updateReq = { $set: keyValObj }
         } else if (type === "push") {
@@ -317,7 +344,7 @@ app.put("/artworks/:artwork", async (req,res) => {
         } else if (type === "pop") {
             updateReq = { $pop: keyValObj }
         } else if (type === "clear") {
-            updateReq = { $unset: keyValObj }
+            updateReq = { $unset: keyValObj } // Update this: having a value doesn't make much sense
         
             // Invalid operation type
         } else {
@@ -343,8 +370,16 @@ app.put("/artworks/:artwork", async (req,res) => {
 /**
  * Alters a list by adding or removing an artwork from it. Returns the list ID.
  */
-app.put("/users/:user/lists/:listName",(req,res)=>{
-    res.write("user's list put " + req.params.user + " called.");
+app.put("/users/:user/lists/:listName", async (req, res) => {
+    const user = req.params.user;
+    const listName = req.params.listName;
+    console.log("PUT /users/:user/lists/:listName called on user " + 
+            user + " and list " + listName);
+    const client = await connectToDatabase();
+    const usersDB = client.db("database") 
+    // Check for the existence of the user and list
+    // WIP
+
     res.end();
 });
 
