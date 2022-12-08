@@ -1,7 +1,7 @@
 //import * as addpage from 'gotoPages.js';
 
 // This is the version for heroku: change this to false if testing locally.
-/* const isLocalVersion = false;
+// const isLocalVersion = false;
 let baseURL = "";
 if (isLocalVersion === false) { 
     baseURL = "https://the-artchive.herokuapp.com";

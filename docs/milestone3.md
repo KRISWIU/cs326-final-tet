@@ -87,7 +87,7 @@ This collection is used to store user data. Each user has their own unique docum
 **Required fields:**
 - `username` - string which effectively serves as the user's id. Required for login and must be unique.
 - `password` - string used to authenticate the user. Stored as a hashed and salted string.
-- `lists` - object array storing list objects. Each list object has a `name` property with a unique name, and a `artworks` property, which is an array containing the int IDs of the artworks in the list.
+- `lists` - object array storing list objects. Each list object has a `name` property with a unique name, and an `artworks` property, which is an array containing the int IDs of the artworks in the list.
 
 **Optional fields:**
 None as of right now.
@@ -123,3 +123,5 @@ Heroku currently has issues (we are mainly struggling with switching pages,) but
 
 # Division of Labor
 - **Jacob Gray - PineVoid** - Database creation, population, and documentation. Also revised documentation in milestone2.md and technicalNotes. Devised the overall database structure and document structure. Wrote small segments of database code (particularly initial code for `GET artworks/:artwork` in server.js).
+- **Yuxiang Nian - MacNian** - Login page redesign, add new fucntion in addtopage.js; Change some small segments in main.js, index.html and login.html to implement the change page function.
+- **Zhenduo Wang - KRISWIU** - Adding important event handlers in main.js and messing with heroku to attempt to get page switching to work. Also attempted to help with writing database code in server.js.

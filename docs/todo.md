@@ -57,9 +57,9 @@
         - [ ] /creator/{creatorName} (Server side complete)
 
 - [ ] **Zhenduo** - **Jacob**: Implement remaining POST API operations
-        - [ ] /artworks
-        - [ ] /users
-        - [ ] /users/{user}/lists/{listName} - This will be edited to have listName as a parameter instead
+        - [ ] /artworks (Server side is done)
+        - [ ] /users (Server side is done, but needs PW hashing)
+        - [ ] /users/{user}/lists/{listName} (Server side is done)
 
 - [ ] **Zhenduo**Implement remaining PUT API operations
         - [ ] /artworks/{artwork}
