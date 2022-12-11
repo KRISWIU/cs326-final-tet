@@ -9,7 +9,7 @@ Our API will be a REST API, with the following methods:
 - PUT - Changes existing data
 - DELETE - Deletes existing data
 
-All methods will return JSON objects with information about the request. In the event of failure or something not existing, an empty JSON object will be returned instead.
+All methods will return JSON objects with the requested information. In the event of failure, an object with only the `error` field will be returned, with a string detailing the error. This string is often safe to print and show to the end user.
 
 Common parameters:
 - `artwork` - integer artwork id. Unique for each artwork.
@@ -25,7 +25,7 @@ Common parameters:
 
 
 #### /artworks/{artwork}
-Returns a JSON object with artwork data for artwork ID. Empty object if ID is invalid.
+Returns a JSON object with the database object for the artwork with the corresponding ID.
 
 **Example command:**
 `curl -X GET https://the-artchive.herokuapp.com/artworks/2 -H "Content-Type: application.json"`
@@ -92,15 +92,16 @@ Returns the user database object associated with this username. May be changed t
 ```
 
 #### /users/{user}/lists
-Returns an array (in JSON form) of objects, with each object corresponding to a list. Each object contains a string `name` propety as well as an int `size` property. 
-Does not return the lists themselves. Returns an empty array if the user is invalid or there are no lists.
+Returns an object with a `lists` field, which is an array of objects. Each object corresponds to a list containing a string `name` propety as well as an int `size` property. 
+Does not return the lists themselves. `lists` will be an empty array if there are no lists.
 
 **Example command:**
 `curl -X GET https://the-artchive.herokuapp.com/users/CoolGuy3/lists -H "Content-Type: application.json"`
 
 **Example response:**
 ```
-[
+{
+  "lists": [
     { 
         "name": "Favorites", 
         "size": 2 
@@ -109,7 +110,8 @@ Does not return the lists themselves. Returns an empty array if the user is inva
         "name": "new list",
         "size": 0
     }
-]
+  ]
+}
 ```
 
 #### /users/{user}/lists/{list}

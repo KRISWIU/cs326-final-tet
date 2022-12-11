@@ -3,12 +3,11 @@
 // This is the version for heroku: change this to false if testing locally.
 // const isLocalVersion = false;
 let baseURL = "";
-if (isLocalVersion === false) { 
+if (isLocalVersion === true) { 
     baseURL = "https://the-artchive.herokuapp.com";
 } else {
     baseURL = "http://localhost:8000";
 }
-*/
 
 // Simple function code to simplify making requests
 async function makeRequest(url, method) {
