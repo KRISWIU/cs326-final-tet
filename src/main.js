@@ -1,14 +1,13 @@
 //import * as addpage from 'gotoPages.js';
 
 // This is the version for heroku: change this to false if testing locally.
-// const isLocalVersion = false;
+const isLocalVersion = true;
 let baseURL = "";
-if (isLocalVersion === false) { 
+if (isLocalVersion === true) { 
     baseURL = "https://the-artchive.herokuapp.com";
 } else {
     baseURL = "http://localhost:8000";
 }
-*/
 
 // Simple function code to simplify making requests
 async function makeRequest(url, method) {
@@ -27,10 +26,16 @@ window.onload = () => {
         const searchBarElem = document.getElementById("searchBar");
         const searchKey = searchBarElem.value;
         const URL = baseURL + "/artworks";
+        
+        // BASIC TEST CODE: DO NOT INCLUDE IN MAIN BRANCH
 
-        (async () => {
+        const testURL = baseURL + "/artworks/1?key=tags&type=push&value=4"
+        const responseObj = await makeRequest(testURL, "PUT");
+        console.log(JSON.stringify(responseObj));
+
+        /* (async () => {
             const returnObj = await makeRequest(URL, "POST"); 
-            console.log("The response object is: " + JSON.stringify(returnObj)); })();  
+            console.log("The response object is: " + JSON.stringify(returnObj)); })();*/  
     });
     // End of search bar event
 
