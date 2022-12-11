@@ -4,7 +4,7 @@
 - [ ] **Jacob**: Implement some kind of "include" functionality for stuff like the navbar
 
 - [ ] **Jacob**: Improve navbar (mainly spacing)
-    - [ ] Make buttons look nicer
+    - [ ]**Yuxiang** Make buttons look nicer
     - [ ] Vertically center everything
     - [ ] Make resizing nicer
     - [ ] Verify functionality for smaller screens
@@ -46,7 +46,7 @@
 - [ ] **Zhenduo**Add rest of the API operations in (if not already done)
       - [ ] Fix formatting on some of the operations, if they're incorrect (may need to allow "querying" or key specification)
       - [ ] Add the actual operations in
-      - [ ] 
+      - [ ] **Yuxiang** Add the function to change to page throgh the button in the main page
 
 - [ ] **Zhenduo**Implement remaining GET API operations
       - [ ] /artworks/{artwork} (Server-side is done)
