@@ -50,7 +50,7 @@ console.log("Server has served basic pages.");
  */
 app.get("/artworks/:artwork", async (req, res) => {
     console.log("GET /artworks/:artwork called on " + req.params.artwork + ".");
-    const artwork = req.params.artwork;
+    const artwork = parseInt(req.params.artwork);
     const client = await connectToDatabase();
     const artworksDB = client.db("database1").collection("artworks");
     const queryResult = await artworksDB.findOne({id: { $eq: artwork }});
@@ -154,14 +154,13 @@ app.get("/tags/:tagName", async (req, res) => {
 });
 
 /**
- * Returns the ID of the creator with the given name,
- * if they exist. (May not implement this.)
+ * Returns the ID of the creator with the given name.
  */
 app.get("/creators/:creator", async (req, res) => {
     console.log("GET /creators/:creator called on " + req.params.creator + ".");
     const client = await connectToDatabase();
     const creatorsDB = client.db("database1").collection("creators");
-    queryResult = await creatorsDB.findOne({id: {$eq: req.params.creator}}, { _id: 0, id: 1 });
+    queryResult = await creatorsDB.findOne({name: {$eq: req.params.creator}}, { _id: 0, id: 1 });
     if (queryResult === null) {
         console.log("Requested creator not found.");
         res.json({error: "The requested creator does not exist."});
@@ -185,7 +184,7 @@ app.post("/artworks", async (req, res) => {
     console.log("POST /artworks called on " + req.url + ".");
     const title = req.query.title;
     const creator = req.query.creator;
-    const tags = req.query.tags ? []: req.query.tags.split(','); // May change this to not be commas in the future
+    const tags = (req.query.tags ?? '').split(',').map( (tagNum) => { return parseInt(tagNum); });
     // Assuming for now that the values are valid if not null
     if (title === null || creator === null) {
         console.log("Artwork creation failed: one of the queries was null.");
@@ -194,17 +193,22 @@ app.post("/artworks", async (req, res) => {
         const client = await connectToDatabase();
         const artworksDB = client.db("database1").collection("artworks");
         // _id field will be added automatically
+        const numWorks = await artworksDB.countDocuments({}) + 1;
+        console.log(numWorks);
         const newArtwork = { 
             // This method will guarantee uniqueness if used consistently, but this method may be changed
-            "id": artworksDB.totalSize(),
+            "id": numWorks,
             "title": title,
             "creator": creator,
             "tags": tags,
-            "links": []
+            "links": [],
+            "description": "",
+            "img": ""
         };
         try {
             const addResult = await artworksDB.insertOne(newArtwork);
             res.json(addResult);
+            console.log("Artwork successfully added to the database!");
         } catch (e) {
             console.log("An error occurred while trying to make artwork " + newArtwork + ".");
             res.json({error: "An error occurred while trying to make artwork."});
@@ -225,13 +229,14 @@ app.post("/users", async (req, res) => {
     const password = req.query.password ?? '';
     // Verify username and password not blank
     // Test these later: they may be flawed.
-    const specialCharRegex = /!@#\$%\^&\*\(\)-_\+=\[\]:;,./;
-    const invalidCharRegex = /^[\w!@#\$%\^&\*\(\)-_\+=\[\]:;,.]/;
+    const specialCharRegex = /!@#\$%\^&\*\(\)-_\+=\[\]:;/;
+    const invalidCharRegex = /^[\w!@#\$%\^&\*\(\)-_\+=\[\]:;]/;
     
     // specialCharsArr is not used here: will be used for client-side password-checking.
     const specialCharsArr = [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', 
-            '[', ']', ':', ';', ',', '.']
+            '[', ']', ':', ';']
     if (username === '' || password === '') {
+        console.log("Username or password was blank.");
         res.json({error: "Username or password are blank!"});
         return;
     // Verify password is strong enough
@@ -241,11 +246,12 @@ app.post("/users", async (req, res) => {
             password.match(/\d/) === "" ||
             password.match(/[a-zA-Z]/) === "" ||
             password.match(invalidCharRegex) !== "" ||
-            // Check password has no invalid chars
-            password.split('').every( (letter) => { return ; }) ||
             password.length > 50) {
+        console.log("Password is: " + password);
+        console.log("password.match(invalidCharRegex) is: " + password.match(invalidCharRegex));
+        console.log("password matching of letters is:" + password.match(/[a-zA-Z]/));
+        console.log("Password was not strong enough or used invalid characters.");
         res.json({error: "Password is not strong enough or uses invalid characters."});
-        res.end();
         return;    
     // Check if username is valid
     } else if (username.match(invalidCharRegex) !== "" || username.length > 50) {
@@ -313,20 +319,25 @@ app.post("/users/:user/lists/:listName", async (req, res) => {
 app.put("/artworks/:artwork", async (req,res) => {
     console.log("PUT /artworks called on " + req.url + ".");
     const artwork = parseInt(req.params.id);
-    const key = req.query.key;
-    const type = req.query.type;
-    const value = req.query.value;
+    const key = req.query.key ?? '';
+    const type = req.query.type ?? '';
+    const value = req.query.value ?? '';
 
     // If we're missing important info, just abort
-    if (key === null || type === null || value === null) {
+    if (key === '' || type === '' || value === '') {
         res.json({error: "Key information is missing."});
     // No checking here: assumes the given params are valid, or at the least, not malicious. Will fix in the future
     } else {
         const client = await connectToDatabase();
         const artworksDB = client.db("database1").collection("artworks");
-        const keyValObj = { key: value };
-        let operation;
-
+        const keyValObj = {};
+        // Technically won't work for resetting the tags, but whatever. Doing this non-explicitly would be ideal, but complicated
+        if (key === tags || key === creator) {
+            keyValObj[key] = parseInt(value);
+        } else {
+            keyValObj[key] = value;
+        }
+        
         // Parse the type of operation
         if (type === "set") {
             updateReq = { $set: keyValObj }
@@ -334,6 +345,8 @@ app.put("/artworks/:artwork", async (req,res) => {
             updateReq = { $push: keyValObj }
         } else if (type === "pop") {
             updateReq = { $pop: keyValObj }
+        } else if (type === "pull") {
+            updateReq = { $pull: keyValObj }
         } else if (type === "clear") {
             updateReq = { $unset: keyValObj } // Update this: having a value doesn't make much sense
         
@@ -346,7 +359,7 @@ app.put("/artworks/:artwork", async (req,res) => {
         // After, if the operation is valid...
         if (updateReq !== null) {
             try {
-                await artworksDB.updateOne({id: artwork}, updateReq);
+                await artworksDB.updateOne({id: {$eq: artwork}}, updateReq);
                 const updatedArtwork = await artworksDB.findOne({id: {$eq: artwork}});
                 res.json(updatedArtwork);
             } catch(e) {
@@ -365,8 +378,8 @@ app.put("/users/:user/lists/:listName", async (req, res) => {
     const listName = req.params.listName;
     console.log("PUT /users/:user/lists/:listName called on user " + 
             user + " and list " + listName);
-    // Verify add and artwork properties exist
-    const artwork = parseInt(req.query.artwork ?? -1);
+    // Verify "artwork" and "add" properties exist
+    const artwork = parseInt(req.query.artwork ?? "-1");
     if (artwork < 1 || (req.query.add !== "true" && req.query.add !== "false")) {
         res.json({error: "'artwork' or 'add' query parameters have missing or invalid values."});
         return;
