@@ -1,5 +1,7 @@
 const { json } = require('express');
 const express = require('express');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const { MongoClient, ObjectId, ListCollectionsCursor } = require('mongodb');
 
 // Start up server
@@ -41,6 +43,20 @@ console.log("Server about to serve basic pages.");
 app.use(express.static('src'))
 console.log("Server has served basic pages.");
 
+//  ###  Authentication related  ###  \\
+
+function checkLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+	// If we are authenticated, run the next route.
+	next();
+    } else {
+	// Otherwise, redirect to the login page.
+	res.redirect('/login');
+    }
+}
+
+
+
 
 //  ###  GET  ###  \\
 
@@ -69,10 +85,10 @@ app.get("/artworks/:artwork", async (req, res) => {
  * Returns a JSON array with IDs matching the input results. 
  * WIP
  */
-app.get("/artworks/search", async (req, res) => {
+app.get("/artworks/search/:artwork", async (req, res) => {
     console.log("GET /artworks/search called on " + req.url + ".");
     // Default values for queries
-    const keywords = req.query.keywords === null ? []: req.query.keywords;
+    /*const keywords = req.query.keywords === null ? []: req.query.keywords;
     const posTags = req.query.tags === null ? []: req.query.posTags;
         // No neg tags as of right now
     const limit = req.query.limit === null ? 5: req.query.limit;
@@ -83,7 +99,20 @@ app.get("/artworks/search", async (req, res) => {
     // !! Database operations not implemented. WIP !!
     res.json([1, 2, 3, 4, 5]);
     console.log("Operation successful.");
-    res.end();
+    res.end();*/
+    const artwork = req.params.artwork;
+    const client = await connectToDatabase();
+    const artworksDB = client.db("database1").collection("artworks");
+    const queryResult = await artworksDB.findOne({title: {$eq: artwork}});
+    if (queryResult === null) {
+        console.log("Requested artwork not found.");
+        res.json({error: "Artwork could not be found."});
+    } else {
+        console.log("Successfully retrieved artwork. Artwork is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
+    console.log("Response successfully delivered and connection ended.");
 });
 
 /**
@@ -147,6 +176,23 @@ app.get("/tags/:tagName", async (req, res) => {
         res.json({error: "The requested tag could not be found."});
     } else {
         console.log("Successfully retrieved tag object. Tag id is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
+    res.end();
+});
+
+// Returns the tagname, given the tag ID.
+app.get("/tags/id/:tagId", async (req, res) => {
+    console.log("GET /tags/id/:tagId called on " + req.params.tagId + ".");
+    const client = await connectToDatabase();
+    const tagsDB = client.db("database1").collection("tags");
+    queryResult = await tagsDB.findOne({id: {$eq: req.params.tagId}});
+    if (queryResult === null) {
+        console.log("Requested tag not found.");
+        res.json({error: "The requested tag could not be found."});
+    } else {
+        console.log("Successfully retrieved tag object. Tag database object is: " + JSON.stringify(queryResult));
         res.json(queryResult);
     }
     await disconnectFromDatabase(client);
