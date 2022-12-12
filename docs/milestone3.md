@@ -16,10 +16,10 @@ This collection is used to store data for artworks. Each document in this databa
 - `creator` - int for the artwork creator's ID. May be rewritten to be an array, to allow for multiple creators. 0 indicates no creator or an anonymous creator.
 - `tags` - int array for holding the IDs of the tags applied to this artwork.
 - `links` - string array for holding URLs related to the artwork.
-- `dateAdded` - string indicating when the artwork was added, in format mm/dd/yyyy.
 
 **Optional fields:**
 - `img` - String URL to the default img displayed for this artwork.
+- `dateAdded` - string indicating when the artwork was added, in format mm/dd/yyyy.
 
 *Example document:*
 ```
@@ -85,10 +85,9 @@ None as of right now.
 This collection is used to store user data. Each user has their own unique document, with the following fields:
 
 **Required fields:**
-- `id` - int used to uniquely refer to this user.
-- `username` - string used for when the user logs in. Must also be unique.
+- `username` - string which effectively serves as the user's id. Required for login and must be unique.
 - `password` - string used to authenticate the user. Stored as a hashed and salted string.
-- `lists` - 2D int array storing (at the highest level) lists, and then the IDs of the works in each list.
+- `lists` - object array storing list objects. Each list object has a `name` property with a unique name, and an `artworks` property, which is an array containing the int IDs of the artworks in the list.
 
 **Optional fields:**
 None as of right now.
@@ -97,13 +96,32 @@ None as of right now.
 ```
 {
     "_id": "000000000000000",
-    "id": 1,
     "username": "test",
-    "password": "password"  // Will ordinarily be hashed, but not implemented as of now
-    "lists": [ [1, 2], [] ]
+    "password": "password123",  // Will ordinarily be hashed, but not implemented as of now
+    "lists": [
+        { 
+            "name": "Favorites", 
+            "artworks": [
+                1, 
+                2
+            ] 
+        }, 
+        { 
+            "name": "new list", 
+            "artworks": [] 
+        }
+    ]
 }
 ```
+
+## Currently working features:
+
+Currently, our database works fine and has some basic data, although not all operations are implemented on the server. We should support GET, POST, PUT, and DELETE for artworks, but testing them will have to be done through CURL or some other kind of console. Examples of everything and how to call them are either included in here or milestone2.md (which has been updated but not finished since the last milestone due date.)
+
+Heroku currently has issues (we are mainly struggling with switching pages,) but this may be resolved soon.
 
 
 # Division of Labor
 - **Jacob Gray - PineVoid** - Database creation, population, and documentation. Also revised documentation in milestone2.md and technicalNotes. Devised the overall database structure and document structure. Wrote small segments of database code (particularly initial code for `GET artworks/:artwork` in server.js).
+- **Yuxiang Nian - MacNian** - Login page redesign, add new fucntion in addtopage.js; Change some small segments in main.js, index.html and login.html to implement the change page function.
+- **Zhenduo Wang - KRISWIU** - Adding important event handlers in main.js and messing with heroku to attempt to get page switching to work. Also attempted to help with writing database code in server.js.

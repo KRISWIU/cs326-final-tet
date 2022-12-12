@@ -1,7 +1,7 @@
 # Todo list
 
 ## HTML work
-- [ ] **Jacob**: Implement some kind of "include" functionality for stuff like the navbar
+- [ ] **Jacob**: Possibly implement some kind of "include" functionality for stuff like the navbar
 
 - [ ] **Jacob**: Improve navbar (mainly spacing)
     - [ ]**Yuxiang** Make buttons look nicer
@@ -12,7 +12,7 @@
 
 - Improve the homepage:
   - [ ] **Jacob**: Fix grid spacing and element appearance
-  - [ ] **Jacob**: Add IDs and documentation on grid in anticipation of JS
+  - [ ] Add IDs and documentation on grid in anticipation of JS
   - [ ] Possibly adding more content (not explicitly adding stuff)?
 
 - [ ] Add other HTML classes for use
@@ -39,39 +39,46 @@
 
 [Part 2](https://docs.google.com/document/d/1U1iXfvlNBNziRkxjKIaDFUqQ8vpYtjOBgWLPY3GRJxg/edit) of the project:
 
-- [ ] **Zhenduo**Fix documentation on the API
-      - [ ] Fix or add documentation on returned objects and related information
-      - [ ] Add examples of API commands and outputs
+- [ ] **Zhenduo** - **Jacob**: Fix documentation on the API
+        - [ ] Fix or add documentation on returned objects and related information
+        - [ ] Add examples of API commands and outputs
 
+<<<<<<< HEAD
 - [ ] **Zhenduo**Add rest of the API operations in (if not already done)
       - [ ] Fix formatting on some of the operations, if they're incorrect (may need to allow "querying" or key specification)
       - [ ] Add the actual operations in
       - [ ] **Yuxiang** Add the function to change to page throgh the button in the main page
+=======
+- [ ] **Zhenduo** Add rest of the API operations in (if not already done)
+        - [ ] Fix formatting on some of the operations, if they're incorrect (may need to allow "querying" or key specification)
+        - [ ] Add the actual operations in
+        - [ ] 
+>>>>>>> 8800b7bd7249a982298962fc6cdc92c10bbcfa0b
 
-- [ ] **Zhenduo**Implement remaining GET API operations
-      - [ ] /artworks/{artwork} (Server-side is done)
-      - [ ] /artworks/search - (Server side data is dummy data, this will be the hardest command to implement if we want imperfect matching.)
-      - [ ] /users/{user}/lists
-      - [ ] /users/{user}/list
-      - [ ] /tags/{tagName} 
-      - [ ] /tags/creator/{creatorName} - will likely revise this: don't actually implement
+- [ ] **Zhenduo** - **Jacob**: Implement remaining GET API operations
+        - [ ] /artworks/{artwork} (Server-side is done)
+        - [ ] /artworks/search - 
+        - [ ] /users/{user}/lists (Server side is done)
+        - [ ] /users/{user}/list (Server side complete
+        - [ ] /tags/{tagName} (Server side complete)
+        - [ ] /creator/{creatorName} (Server side complete)
 
-- [ ] **Zhenduo**Implement remaining POST API operations
-      - [ ] /artworks
-      - [ ] /users
-      - [ ] /users/{user}/lists/{listName} - This will be edited to have listName as a parameter instead
+- [ ] **Zhenduo** - **Jacob**: Implement remaining POST API operations
+        - [ ] /artworks (Server side is done)
+        - [ ] /users (Server side is done, but needs PW hashing)
+        - [ ] /users/{user}/lists/{listName} (Server side is done)
 
 - [ ] **Zhenduo**Implement remaining PUT API operations
-      - [ ] /artworks/{artwork}
-      - [ ] /users/{user}/lists/{listName}
+        - [ ] /artworks/{artwork}
+        - [ ] /users/{user}/lists/{listName}
 
 - [ ] **Zhenduo**Implement remaining DELETE API operations
-      - [ ] /artworks/{artwork}
-      - [ ] /users/{user}
-      - [ ] /users/{user}/lists/{listName}
+        - [ ] /artworks/{artwork}
+        - [ ] /users/{user}
+        - [ ] /users/{user}/lists/{listName}
 
 - [ ] **Zhenduo**Add necessary JS interactions with other pieces (other event listeners, linking to other pages)
-      - Switch webpages upon clicks (may be able to do this with plain HTML which need to be implement after all page are in haroku)
+        - Switch webpages upon clicks (may be able to do this with plain HTML which need to be implement after all page are in haroku)
 
 - [x] **Jacob**: Fix Heroku not working
 

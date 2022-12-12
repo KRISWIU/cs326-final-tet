@@ -12,10 +12,10 @@ Our API will be a REST API, with the following methods:
 All methods will return JSON objects with information about the request. In the event of failure or something not existing, an empty JSON object will be returned instead.
 
 Common parameters:
-- artwork - Unique identifier for each artwork in the database.
-- user - Unique ID for each user.
-- list - list ID. Note that this is attached to each user, so each list has a single ID, but that ID is not unique across users.
-- tag - tag ID. One for each tag.
+- `artwork` - integer artwork id. Unique for each artwork.
+- `user` - string username for each user. Unique.
+- `list` - string username for this list. Unqiue for each user.
+- `tag` - integer tag ID. Unique for each tag.
 
 
 # Endpoints
@@ -28,7 +28,7 @@ Common parameters:
 Returns a JSON object with artwork data for artwork ID. Empty object if ID is invalid.
 
 **Example command:**
-`curl -X GET http://the-artchive.herokuapp.com/artworks/2 -H "Content-Type: application.json"`
+`curl -X GET https://the-artchive.herokuapp.com/artworks/2 -H "Content-Type: application.json"`
 
 **Example response:**
 ```
@@ -52,29 +52,115 @@ Returns a JSON object with IDs matching the input results. Search format is:
 - offset - number indicating which result to start displaying at (useful when seperating search results into pages.)
 
 **Example command:**
-`curl -X GET http://the-artchive.herokuapp.com/artworks/search?keywords=The-Waste-Land&posTags=[5] -H "Content-Type: application.json"`
+`curl -X GET https://the-artchive.herokuapp.com/artworks/search?keywords=The-Waste-Land&posTags=[5] -H "Content-Type: application.json"`
 
 **Example response:**
+```
 [
   { artwork1 },
   { artwork2 },
   { artwork3 }
 ]
+```
 
-### /users/{username}
-Returns the ID associated with this username, as well as other potentially important information.
+### /users/{user}
+Returns the user database object associated with this username. May be changed to be more restricted in scope.
+
+**Example command:**
+`curl -X GET https://the-artchive.herokuapp.com/users/CoolGuy3 -H "Content-Type: application.json"`
+
+**Example response:**
+```
+{
+    "_id": "000000000000000",
+    "username": "test",
+    "password": "password123",  // Will ordinarily be hashed, but not implemented as of now
+    "lists": [
+        { 
+            "name": "Favorites", 
+            "artworks": [
+                1, 
+                2
+            ] 
+        }, 
+        { 
+            "name": "new list", 
+            "artworks": [] 
+        }
+    ]
+}
+```
 
 #### /users/{user}/lists
-Returns an object summarizing basic information of all lists for this user. Does not return the lists themselves.
+Returns an array (in JSON form) of objects, with each object corresponding to a list. Each object contains a string `name` propety as well as an int `size` property. 
+Does not return the lists themselves. Returns an empty array if the user is invalid or there are no lists.
+
+**Example command:**
+`curl -X GET https://the-artchive.herokuapp.com/users/CoolGuy3/lists -H "Content-Type: application.json"`
+
+**Example response:**
+```
+[
+    { 
+        "name": "Favorites", 
+        "size": 2 
+    },
+    {
+        "name": "new list",
+        "size": 0
+    }
+]
+```
 
 #### /users/{user}/lists/{list}
-Returns the list object. Described in more detail in technicalNotes.md.
+Returns the database list object for this user, given the list name.
+Returns null if the list or user doesn't exist.
+
+**Example command:**
+`curl -X GET https://the-artchive.herokuapp.com/users/CoolGuy3/lists/Favorites -H "Content-Type: application.json"`
+
+**Example response:**
+```
+{ 
+    "name": "Favorites", 
+    "artworks": [
+        1, 
+        2
+    ] 
+}
+```
 
 #### /tags/{tagName}
-Returns the ID of the tag with the given name, if it exists.
+Returns a JSON object with field `id` containing the ID for this tag.
+Returns null if there is no tag with this name.
 
-#### /tags/creators/{creator}
-Returns the ID of the creator with the given name, if they exist. (May not implement this.)
+`curl -X GET https://the-artchive.herokuapp.com/tags/poem -H "Content-Type: application.json"`
+
+**Example response:**
+```
+{ 
+    "id": 5
+}
+```
+
+#### /tags/{tagID}
+Returns the database JSON object corresponding to this tag, given the id.
+Returns null if there is no tag with this id.
+
+`curl -X GET https://the-artchive.herokuapp.com/tags/5 -H "Content-Type: application.json"`
+
+**Example response:**
+```
+{
+    "_id": "000000000000000",
+    "id": 5,
+    "name": "poem",
+    "works": [2, 3, 4]
+}
+```
+
+#### /creators/{creator}
+Returns the ID of the creator with the given name, if they exist.
 
 
 ## POST
@@ -86,8 +172,23 @@ Creates a new artwork in the database with given user data. Returns the object f
   - creator - ID for creator of this piece.
   - tags - list of numbers seperated by commas, indicating the tags to apply to the artwork upon creation. Will not create the artwork if tags do not exist.
 
+  **Example command:**
+`curl -X POST https://the-artchive.herokuapp.com/artworks?title="The Waste Land"&creator=3&tags=5 -H "Content-Type: application/json"`
+
+**Example response:**
+```
+{
+  "_id": "000000000000000",
+  "id": 2,
+  "title": "The Waste Land",
+  "creator": 3,
+  "tags": [5],
+  "links": [],
+}
+```
+
 #### /users
-Creates a new user with the given username and password. If successful, returns an object for the user. More information in technicalNotes.md.
+Creates a new user with the given username and password. If successful, returns an object for the user. User object structure is described in milestone3.md.
 Format:
 
 
@@ -101,7 +202,7 @@ Creates a list named {listName} attached to {user}. Returns an object with the l
 #### /artworks/{artwork}
 Changes the indicated property of the artwork to match what the user inputs.
   - key - **Required** string which indicates property to change (eg. title, tags).
-  - type - **Required** string which indicates the type of operation on the key. One of "add", "set," or "remove". 
+  - type - **Required** string which indicates the type of operation on the key. One of "set", "push", "pop", or "unset". Note that `remove` affects the field, while the others merely affect values. Future modifications will allow more complicated operations. 
   - value - **Required** string which indicates what value to set the key to. This should match directly how it should be stored in the database: eg., if the key holds an ID, this value should be an ID. If the key holds a link, the value should be a link.
 
 #### /users/{user}
