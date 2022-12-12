@@ -4,18 +4,32 @@
 
 # Overview
 
+Broadly speaking, our application is meant to be a database of artworks which users can manage in lists and organize. In comparison to sites like MyAnimeList or Goodreads, which are focused on a specific medium, our site allows arbitrary artworks to be added and managed, as well as tags to be created and applied at will (at least in theory.)
+
 # Team members
 **PineVoid** - **Jacob Gray**
 
 # User interface
 
+
+
 # API
+
+Our API structure is described in milestone2.md. A few functions are out of date (such as search,) but that file has been actively maintained and would take up a lot of space here.
 
 # Database
 
+Our database structure is the same as it was in milestone3.md (and has been actively updated since milestone3). We will refer you to that document in the interest of space.
+
 # URL Routes
 
+As we were unable to implement authentication, all routes should be accessible without it.
+
+Our structure for routing is detailed in milestone2.md, which has been actively updated and maintained since milestone2. We will also refer you to that document in the interest of space.
+
 # Authentication
+
+As of right now, users can be created, but authentication does not work. We were behind on certain things and as such spent a large amount of time implementing backend and server-side functionality, but were unable to carry through and finish it off in terms of adding authentication and login. We also didn't have time to implement hashing and encryption, so **don't** use your personal password on the site.
 
 
 # Division of Labor
@@ -49,3 +63,7 @@ These are all just guesses, but I feel like I've written 250 to 500 lines of cod
 # Additional Information
 
 # Conclusion
+
+As a team, we found the project very challenging overall, perhaps as evidenced by the amount of features we could still implement, but overall, it was very educational. We were surprising by the amount of freedom we had regarding certain design decisions (such as the API) and have started to come to see why certain things are set up the way they are. The most challening aspect was by far the client-side code that we had to do, given that there's a lot to improve about it and it has to be error-resistant since the end-user is facing it.
+
+Dealing with Heroku was also fairly difficult, especially since things which worked locally sometimes failed to work on Heroku, which made for difficult troubleshooting.
