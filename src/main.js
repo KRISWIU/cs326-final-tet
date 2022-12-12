@@ -70,6 +70,4 @@ window.onload = () => {
             const returnObj = await makeRequest(URL, "POST"); 
             console.log("The response object is: " + JSON.stringify(returnObj)); })();
     });
-
-    
 };

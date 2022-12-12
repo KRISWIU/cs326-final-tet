@@ -1,15 +1,7 @@
-class listPage{
-    constructor(userName){
-        this.userName = userName;
-        this.url = "/users/" + userName;
-        this.result = this.makeRequest(this.url,GET);
-        this.lists = result["lists"];
-    }
-
-    async makeRequest(url, method) {
-        const response = await fetch(url, { method: method });
-        const responsejson = await response.json();
-        return responsejson;
+//not using anymore
+export class ListPage{
+    constructor(lists){
+        this.lists = lists;
     }
 
     render(){
