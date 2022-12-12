@@ -9,6 +9,7 @@ if (isLocalVersion === true) {
     baseURL = "http://localhost:5000";
 }
 
+
 // Simple function code to simplify making requests
 async function makeRequest(url, method) {
     const response = await fetch(url, { method: method });
@@ -71,5 +72,6 @@ window.onload = () => {
             console.log("The response object is: " + JSON.stringify(returnObj)); })();
     });
 
-    
+   // document.getElementById("siteName").addEventListener("click", gotoMainPage());
+   // document.getElementById('addWork').addEventListener('click', gotoAddWork());
 };
