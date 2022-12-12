@@ -302,14 +302,14 @@ app.post("/users/:user/lists/:listName", async (req, res) => {
         console.log("List creation failed: user does not exist.");
         res.json({error: "List creation failed: this user does not exist."});
     // Verify this list name is not already taken:
-    } else if (userLists.lists.some((list) => { list.name === listName })) {
+    } else if (userLists.lists.some((listObj) => { return listObj.name === listName })) {
         res.json({error: "List creation failed: this user already has a list with this name."});
     } else {
         // Add this new list to this user
-        console.log("List creation succeeded.");
         await usersDB.updateOne(
                 {username: username}, 
                 {$push: {lists: {name: listName, artworks: []}}});
+        console.log("New list added to user " + user);
         res.json({name: listName});
     }
     await disconnectFromDatabase(client);
@@ -335,7 +335,8 @@ app.post("/tags", async (req, res) => {
                 name: tagName,
                 works: []
         });
-        res.json(addResponse);
+        const newTag = await tagsDB.findOne({_id: {$eq: addResponse._id}});
+        res.json(newTag);
     }
     await disconnectFromDatabase(client);
 });
@@ -345,7 +346,7 @@ app.post("/tags", async (req, res) => {
  */
 app.post("/creators", async (req, res) => {
     const creatorName = req.query.creatorName;
-    console.log("POST /tags called on tag " + creatorName + ".");
+    console.log("POST /creators called on creator " + creatorName + ".");
     const client = await connectToDatabase();
     const creatorsDB = client.db("database1").collection("creators");
     // Check if there is a tag with this name already
@@ -360,7 +361,8 @@ app.post("/creators", async (req, res) => {
                 name: creatorName,
                 works: []
         });
-        res.json(addResponse);
+        const newCreator = await creatorsDB.findOne({_id: {$eq: addResponse._id}});
+        res.json(newCreator);
     }
     await disconnectFromDatabase(client);
 })
@@ -371,7 +373,7 @@ app.post("/creators", async (req, res) => {
  */
 app.put("/artworks/:artwork", async (req,res) => {
     console.log("PUT /artworks called on " + req.url + ".");
-    const artwork = parseInt(req.params.id);
+    const artwork = parseInt(req.params.artwork);
     const key = req.query.key ?? '';
     const type = req.query.type ?? '';
     const value = req.query.value ?? '';
@@ -385,7 +387,7 @@ app.put("/artworks/:artwork", async (req,res) => {
         const artworksDB = client.db("database1").collection("artworks");
         const keyValObj = {};
         // Technically won't work for resetting the tags, but whatever. Doing this non-explicitly would be ideal, but complicated
-        if (key === tags || key === creator) {
+        if (key === "tags" || key === "creator") {
             keyValObj[key] = parseInt(value);
         } else {
             keyValObj[key] = value;
@@ -412,8 +414,10 @@ app.put("/artworks/:artwork", async (req,res) => {
         // After, if the operation is valid...
         if (updateReq !== null) {
             try {
+                console.log("The current updateReq object is: " + JSON.stringify(updateReq));
                 await artworksDB.updateOne({id: {$eq: artwork}}, updateReq);
                 const updatedArtwork = await artworksDB.findOne({id: {$eq: artwork}});
+                console.log("The updated artwork is: " + updatedArtwork);
                 res.json(updatedArtwork);
             } catch(e) {
                 console.log("There was an error editing artwork" + artwork + ".");
@@ -440,39 +444,50 @@ app.put("/users/:user/lists/:listName", async (req, res) => {
     const isAdd = req.query.add === "true";
     
     const client = await connectToDatabase();
-    const usersDB = client.db("database") 
+    const usersDB = client.db("database1").collection("users");
     // Check for the existence of the user and list
-    const lists = await usersDB.findOne(
-            {username: { $eq: req.params.user}}, 
-            { _id: 0, lists: 1 });
-    const listIndex = -1;
-    lists.forEach( (list, index) => { 
+    const userObj = await usersDB.findOne(
+            {username: { $eq: req.params.user}});
+    if (userObj === null) {
+        res.json({error: "User could not be found."});
+        await disconnectFromDatabase(client);
+        return;
+    }
+    // Try and verify the list exists
+    /* let listIndex = -1;
+    userObj.lists.forEach( (list, index) => { 
+        console.log("list.name is " + list.name + " and listName is " + listName);
         if (list.name === listName) {
-            list = index;
+            console.log("Found the matching list!");
+            listIndex = index;
         }
     });
+    console.log("listIndex is: " + listIndex);
     if (listIndex === -1) {
         console.log("List could not be found.");
         res.json({error: "List could not be found."});
         await disconnectFromDatabase(client);
         return;
-    }
+    }*/
     
     // Adding an artwork (will add duplicates)
     if (isAdd) {
-        await usersDB.updateOne(
+        const response = await usersDB.updateOne(
             {username: {$eq: user}}, 
-            {$push: { "lists.$[listIndex].artworks": artwork}},
-            {arrayFilters: [ {"listIndex": {$eq: listIndex}} ] });
-        res.json({name: listName});
+            {$push: { "lists.$[list].artworks": artwork}},
+            {arrayFilters: [ {"list.name": {$eq: listName}} ] });
+        console.log("Artwork successfully added to list!");
+        res.json(response);
     
     // Removing an artwork
     } else {
         // Not currently checking if the artwork is actually in the database
         await usersDB.updateOne(
             {username: {$eq: user}}, 
-            {$pull: { "lists.$[listIndex].artworks": artwork}},
-            {arrayFilters: [ {"listIndex": {$eq: listIndex}} ] });
+            {$pull: { "lists.$[list].artworks": artwork}},
+            {arrayFilters: [ {"list.name": {$eq: listName}} ] });
+        console.log("Artwork successfully removed from list!");
+        res.json({name: listName});
     }
     await disconnectFromDatabase(client);
 });
@@ -488,9 +503,9 @@ app.delete("/artworks/:artwork", async (req,res)=>{
     const client = await connectToDatabase();
     const artworksDB = client.db("database1").collection("artworks");
     try {
-        const artworkJSON = await artworksDB.findOne({id: artwork});
+        const artworkJSON = await artworksDB.findOne({id: {$eq: artwork}});
         await artworksDB.deleteOne({id: {$eq: artwork}});
-        res.json(artworksJSON);    
+        res.json(artworkJSON);    
     } catch(e) {
         res.json({error: "Artwork deletion operation failed."});
     }
