@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="gotoPages.js"></script>
     <script src="login.js"></script>
+    <script src="main.js"></script>
     <style>
         * {
             margin: 0;
@@ -162,24 +163,25 @@
     <div class="login">
         <div class="header">Log In</div>
         <div class="container">
-            <input type="Username" placeholder="Username">
+            <input id="usernameForm" type="Username" placeholder="Username">
             <span class="left"></span>
             <span class="right"></span>
             <span class="top"></span>
             <span class="bottom"></span>
         </div>
         <div class="container1">
-            <input type="password" placeholder="Password">
+            <input id="passwordForm" type="password" placeholder="Password">
             <span class="left"></span>
             <span class="right"></span>
             <span class="top"></span>
             <span class="bottom"></span>
         </div>
-        <button class="btn" onclick="gotoMainPage()">LogIn</button>
+        <button id="loginButton" class="btn">LogIn</button>
         <div class="header1">Don't have an account?</div>
         <button class="btn1" onclick="gotoSignup()">SignUp</button>
     </div>
 
+    <div id="feedback"></div>
     
 </body>
 </html>

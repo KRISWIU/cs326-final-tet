@@ -43,6 +43,7 @@ console.log("Server about to serve basic pages.");
 app.use(express.static('src'))
 console.log("Server has served basic pages.");
 
+
 //  ###  Authentication related  ###  \\
 
 function checkLoggedIn(req, res, next) {
@@ -55,7 +56,9 @@ function checkLoggedIn(req, res, next) {
     }
 }
 
+app.get("/login"), async (req, res) => {
 
+}
 
 
 //  ###  GET  ###  \\
@@ -228,11 +231,11 @@ app.get("/creators/:creator", async (req, res) => {
  */
 app.post("/artworks", async (req, res) => {
     console.log("POST /artworks called on " + req.url + ".");
-    const title = req.query.title;
-    const creator = req.query.creator;
+    const title = req.query.title ?? '';
+    const creator = req.query.creator ?? '';
     const tags = (req.query.tags ?? '').split(',').map( (tagNum) => { return parseInt(tagNum); });
     // Assuming for now that the values are valid if not null
-    if (title === null || creator === null) {
+    if (title === '' || creator === '') {
         console.log("Artwork creation failed: one of the queries was null.");
         res.json({error: "A query for artwork creation was null."});
     } else {
@@ -278,9 +281,6 @@ app.post("/users", async (req, res) => {
     const specialCharRegex = /[\!\@\$\%\^\&\*\(\)\_\+\=\[\]\:\;\-]/;
     const invalidCharRegex = /^(?![\w\d\!\@\$\%\^\&\*\(\)\_\+\=\[\]\:\;\-])/;
     
-    // specialCharsArr is not used here: will be used for client-side password-checking.
-    const specialCharsArr = [ '!', '@', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', 
-            '[', ']', ':', ';']
     if (username === '' || password === '') {
         console.log("Username or password was blank.");
         res.json({error: "Username or password are blank!"});
