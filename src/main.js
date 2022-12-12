@@ -6,7 +6,7 @@ let baseURL = "";
 if (isLocalVersion === true) { 
     baseURL = "https://the-artchive.herokuapp.com";
 } else {
-    baseURL = "http://localhost:8000";
+    baseURL = "http://localhost:5000";
 }
 
 // Simple function code to simplify making requests
