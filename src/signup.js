@@ -1,11 +1,4 @@
-//const baseURL = "https://the-artchive.herokuapp.com";
-const baseURL = "http://localhost:5000";
 
-async function makeRequest(url, method) {
-    const response = await fetch(url, { method: method });
-    const responsejson = await response.json();
-    return responsejson;
-}
 
 window.onload = () => {
     
@@ -17,7 +10,15 @@ window.onload = () => {
         console.log("Username is " + username + " and password is " + password);
         const requestURL = baseURL + "/users?username=" + username + "&password=" + password;
         console.log(requestURL);
-        await makeRequest(requestURL, "POST");
+        const request = await makeRequest(requestURL, "POST");
+
+        // Printing feedback to the user
+        const feedbackArea = document.getElementById("feedback");
+        if (Object.keys(request).includes("error")) {
+            feedbackArea.innerHTML = request.error;
+        } else {
+            feedbackArea.innerHTML = "Your new user was created!";
+        }
     });
 
 

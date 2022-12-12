@@ -27,13 +27,7 @@ window.onload = () => {
         const searchBarElem = document.getElementById("searchBar");
         const searchKey = searchBarElem.value;
         const URL = baseURL + "/artworks";
-        
-        // BASIC TEST CODE: DO NOT INCLUDE IN MAIN BRANCH
-
-        const testURL = baseURL + "/artworks/1?key=tags&type=push&value=4"
-        const responseObj = await makeRequest(testURL, "PUT");
-        console.log(JSON.stringify(responseObj));
-
+    
         /* (async () => {
             const returnObj = await makeRequest(URL, "POST"); 
             console.log("The response object is: " + JSON.stringify(returnObj)); })();*/  
