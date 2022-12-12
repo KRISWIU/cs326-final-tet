@@ -5,7 +5,7 @@ const { MongoClient, ObjectId, ListCollectionsCursor } = require('mongodb');
 // Start up server
 const app = express();
 console.log("Server successfully started.");
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 5000;
 console.log("Selected port number is: " + port);
 
 // Function for connecting to database
@@ -229,11 +229,11 @@ app.post("/users", async (req, res) => {
     const password = req.query.password ?? '';
     // Verify username and password not blank
     // Test these later: they may be flawed.
-    const specialCharRegex = /!@#\$%\^&\*\(\)-_\+=\[\]:;/;
-    const invalidCharRegex = /^[\w!@#\$%\^&\*\(\)-_\+=\[\]:;]/;
+    const specialCharRegex = /[\!\@\$\%\^\&\*\(\)\_\+\=\[\]\:\;\-]/;
+    const invalidCharRegex = /^(?![\w\d\!\@\$\%\^\&\*\(\)\_\+\=\[\]\:\;\-])/;
     
     // specialCharsArr is not used here: will be used for client-side password-checking.
-    const specialCharsArr = [ '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', 
+    const specialCharsArr = [ '!', '@', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', 
             '[', ']', ':', ';']
     if (username === '' || password === '') {
         console.log("Username or password was blank.");
@@ -242,28 +242,27 @@ app.post("/users", async (req, res) => {
     // Verify password is strong enough
     } else if (
             password.length < 8 ||
-            password.match(specialCharRegex) === "" ||
-            password.match(/\d/) === "" ||
-            password.match(/[a-zA-Z]/) === "" ||
-            password.match(invalidCharRegex) !== "" ||
+            password.match(specialCharRegex) === null ||
+            password.match(/\d/) === null ||
+            password.match(/[a-zA-Z]/) === null ||
+            password.match(invalidCharRegex) !== null ||
             password.length > 50) {
-        console.log("Password is: " + password);
-        console.log("password.match(invalidCharRegex) is: " + password.match(invalidCharRegex));
-        console.log("password matching of letters is:" + password.match(/[a-zA-Z]/));
         console.log("Password was not strong enough or used invalid characters.");
         res.json({error: "Password is not strong enough or uses invalid characters."});
         return;    
     // Check if username is valid
-    } else if (username.match(invalidCharRegex) !== "" || username.length > 50) {
+    } else if (username.match(invalidCharRegex) !== null || username.length > 50) {
+        console.log("Username had an invalid character or was too long.");
         res.json({error: "Username has an invalid character or is too long."});
+        return;
     }
 
     // Check if the username is already taken: might want to turn this into a function
     const client = await connectToDatabase();
     const usersDB = client.db("database1").collection("users");
-    const isDuplicateUser = Object.keys(
-            await usersDB.findOne({username: username})).length === 0;
-    if (isDuplicateUser) {
+    const existingUser = await usersDB.findOne({username: {$eq: username}}, {_id: 0, username: 1});
+    if (existingUser !== null) {
+        console.log("Username is already taken.");
         res.json({error: "Username is already taken."});
         await disconnectFromDatabase(client);
         return;
@@ -272,7 +271,10 @@ app.post("/users", async (req, res) => {
     // Username and password are valid: add the user to the database
     // PASSWORD IS NOT CURRENTLY BEING HASHED: FIX THIS LATER
     try { 
-        const newUser = await usersDB.insertOne({ username: username, password: password })
+        const newUser = await usersDB.insertOne({ 
+                username: username, 
+                password: password,
+                lists: []});
         res.json(newUser);
     } catch (e) {
         res.json("Error: the user could not be added to the database.");
@@ -288,29 +290,82 @@ app.post("/users/:user/lists/:listName", async (req, res) => {
     const username = req.params.user;
     const listName = req.params.listName;
     console.log("POST /users/:user/lists/:listName called on user " + 
-            user + " with list " + listName + ".");
+            username + " with list " + listName + ".");
     const client = await connectToDatabase();
     const usersDB = client.db("database1").collection("users");
     // Can probably refine this query to determine existence of name: optimize later
-    const userLists = await usersDB.findOne({username: username}, {lists: 1});
+    const userLists = await usersDB.findOne(
+            {username: {$eq: username}}, 
+            { _id: 0, lists: 1 });
     // Verify this user exists
     if (userLists === null) {
-        res.json({error: "List creation failed: this user does not exist."})
-    }
+        console.log("List creation failed: user does not exist.");
+        res.json({error: "List creation failed: this user does not exist."});
     // Verify this list name is not already taken:
-    if (userLists.some((list) => { list.name === listName })) {
+    } else if (userLists.lists.some((listObj) => { return listObj.name === listName })) {
         res.json({error: "List creation failed: this user already has a list with this name."});
     } else {
         // Add this new list to this user
         await usersDB.updateOne(
-                {username: user}, 
+                {username: username}, 
                 {$push: {lists: {name: listName, artworks: []}}});
+        console.log("New list added to user " + user);
         res.json({name: listName});
     }
+    await disconnectFromDatabase(client);
 });
 
+/*
+ * Creates a new tag with the given name.
+ */
+app.post("/tags", async (req, res) => {
+    const tagName = req.query.tagName;
+    console.log("POST /tags called on tag " + tagName + ".");
+    const client = await connectToDatabase();
+    const tagsDB = client.db("database1").collection("tags");
+    // Check if there is a tag with this name already
+    const existingTag = await tagsDB.findOne({name: {$eq: tagName}}, {name: 1});
+    if (existingTag !== null) {
+        console.log("The given tag already exists.");
+        res.json({error: "The given tag already exists."});
+    } else {
+        const numTags = await tagsDB.countDocuments({});
+        const addResponse = await tagsDB.insertOne({
+                id: numTags + 1,
+                name: tagName,
+                works: []
+        });
+        const newTag = await tagsDB.findOne({_id: {$eq: addResponse._id}});
+        res.json(newTag);
+    }
+    await disconnectFromDatabase(client);
+});
 
-
+/* 
+ * Creates a new creator with the given name. Query parameters are:
+ */
+app.post("/creators", async (req, res) => {
+    const creatorName = req.query.creatorName;
+    console.log("POST /creators called on creator " + creatorName + ".");
+    const client = await connectToDatabase();
+    const creatorsDB = client.db("database1").collection("creators");
+    // Check if there is a tag with this name already
+    const existingCreator = await creatorsDB.findOne({name: {$eq: creatorName}}, {name: 1});
+    if (existingCreator !== null) {
+        console.log("The given creator already exists.");
+        res.json({error: "The given creator already exists."});
+    } else {
+        const numCreators = await creatorsDB.countDocuments({});
+        const addResponse = await creatorsDB.insertOne({
+                id: numCreators + 1,
+                name: creatorName,
+                works: []
+        });
+        const newCreator = await creatorsDB.findOne({_id: {$eq: addResponse._id}});
+        res.json(newCreator);
+    }
+    await disconnectFromDatabase(client);
+})
 
 //  ###  PUT  ###  \\
 /**
@@ -318,7 +373,7 @@ app.post("/users/:user/lists/:listName", async (req, res) => {
  */
 app.put("/artworks/:artwork", async (req,res) => {
     console.log("PUT /artworks called on " + req.url + ".");
-    const artwork = parseInt(req.params.id);
+    const artwork = parseInt(req.params.artwork);
     const key = req.query.key ?? '';
     const type = req.query.type ?? '';
     const value = req.query.value ?? '';
@@ -332,7 +387,7 @@ app.put("/artworks/:artwork", async (req,res) => {
         const artworksDB = client.db("database1").collection("artworks");
         const keyValObj = {};
         // Technically won't work for resetting the tags, but whatever. Doing this non-explicitly would be ideal, but complicated
-        if (key === tags || key === creator) {
+        if (key === "tags" || key === "creator") {
             keyValObj[key] = parseInt(value);
         } else {
             keyValObj[key] = value;
@@ -359,8 +414,10 @@ app.put("/artworks/:artwork", async (req,res) => {
         // After, if the operation is valid...
         if (updateReq !== null) {
             try {
+                console.log("The current updateReq object is: " + JSON.stringify(updateReq));
                 await artworksDB.updateOne({id: {$eq: artwork}}, updateReq);
                 const updatedArtwork = await artworksDB.findOne({id: {$eq: artwork}});
+                console.log("The updated artwork is: " + updatedArtwork);
                 res.json(updatedArtwork);
             } catch(e) {
                 console.log("There was an error editing artwork" + artwork + ".");
@@ -387,39 +444,50 @@ app.put("/users/:user/lists/:listName", async (req, res) => {
     const isAdd = req.query.add === "true";
     
     const client = await connectToDatabase();
-    const usersDB = client.db("database") 
+    const usersDB = client.db("database1").collection("users");
     // Check for the existence of the user and list
-    const lists = await usersDB.findOne(
-            {username: { $eq: req.params.user}}, 
-            { _id: 0, lists: 1 });
-    const listIndex = -1;
-    lists.forEach( (list, index) => { 
+    const userObj = await usersDB.findOne(
+            {username: { $eq: req.params.user}});
+    if (userObj === null) {
+        res.json({error: "User could not be found."});
+        await disconnectFromDatabase(client);
+        return;
+    }
+    // Try and verify the list exists
+    /* let listIndex = -1;
+    userObj.lists.forEach( (list, index) => { 
+        console.log("list.name is " + list.name + " and listName is " + listName);
         if (list.name === listName) {
-            list = index;
+            console.log("Found the matching list!");
+            listIndex = index;
         }
     });
+    console.log("listIndex is: " + listIndex);
     if (listIndex === -1) {
         console.log("List could not be found.");
         res.json({error: "List could not be found."});
         await disconnectFromDatabase(client);
         return;
-    }
+    }*/
     
     // Adding an artwork (will add duplicates)
     if (isAdd) {
-        await usersDB.updateOne(
+        const response = await usersDB.updateOne(
             {username: {$eq: user}}, 
-            {$push: { "lists.$[listIndex].artworks": artwork}},
-            {arrayFilters: [ {"listIndex": {$eq: listIndex}} ] });
-        res.json({name: listName});
+            {$push: { "lists.$[list].artworks": artwork}},
+            {arrayFilters: [ {"list.name": {$eq: listName}} ] });
+        console.log("Artwork successfully added to list!");
+        res.json(response);
     
     // Removing an artwork
     } else {
         // Not currently checking if the artwork is actually in the database
         await usersDB.updateOne(
             {username: {$eq: user}}, 
-            {$pull: { "lists.$[listIndex].artworks": artwork}},
-            {arrayFilters: [ {"listIndex": {$eq: listIndex}} ] });
+            {$pull: { "lists.$[list].artworks": artwork}},
+            {arrayFilters: [ {"list.name": {$eq: listName}} ] });
+        console.log("Artwork successfully removed from list!");
+        res.json({name: listName});
     }
     await disconnectFromDatabase(client);
 });
@@ -435,9 +503,9 @@ app.delete("/artworks/:artwork", async (req,res)=>{
     const client = await connectToDatabase();
     const artworksDB = client.db("database1").collection("artworks");
     try {
-        const artworkJSON = await artworksDB.findOne({id: artwork});
+        const artworkJSON = await artworksDB.findOne({id: {$eq: artwork}});
         await artworksDB.deleteOne({id: {$eq: artwork}});
-        res.json(artworksJSON);    
+        res.json(artworkJSON);    
     } catch(e) {
         res.json({error: "Artwork deletion operation failed."});
     }
