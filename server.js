@@ -69,10 +69,10 @@ app.get("/artworks/:artwork", async (req, res) => {
  * Returns a JSON array with IDs matching the input results. 
  * WIP
  */
-app.get("/artworks/search", async (req, res) => {
+app.get("/artworks/search/:artwork", async (req, res) => {
     console.log("GET /artworks/search called on " + req.url + ".");
     // Default values for queries
-    const keywords = req.query.keywords === null ? []: req.query.keywords;
+    /*const keywords = req.query.keywords === null ? []: req.query.keywords;
     const posTags = req.query.tags === null ? []: req.query.posTags;
         // No neg tags as of right now
     const limit = req.query.limit === null ? 5: req.query.limit;
@@ -83,7 +83,20 @@ app.get("/artworks/search", async (req, res) => {
     // !! Database operations not implemented. WIP !!
     res.json([1, 2, 3, 4, 5]);
     console.log("Operation successful.");
-    res.end();
+    res.end();*/
+    const artwork = req.params.artwork;
+    const client = await connectToDatabase();
+    const artworksDB = client.db("database1").collection("artworks");
+    const queryResult = await artworksDB.findOne({title: {$eq: artwork}});
+    if (queryResult === null) {
+        console.log("Requested artwork not found.");
+        res.json({error: "Artwork could not be found."});
+    } else {
+        console.log("Successfully retrieved artwork. Artwork is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
+    console.log("Response successfully delivered and connection ended.");
 });
 
 /**
