@@ -11,3 +11,6 @@ function gotoLogIn(){
     //window.location.rel="external nofollow";
     window.location = "login.html";
 }
+function gotoSignup(){
+    window.location = "sign-up.html";
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The Artchive</title>
+    <link rel="stylesheet" href="searchresult.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Don't really know too much about the details, but needs these lines to use bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="gotoPages.js"></script>
+    <script src="addPages.js"></script>
+    <style>
+     #bodyDiv{
+        position: absolute;
+            left: 10%;
+            top: 10%;
+     }
+    
+    </style>
+</head>
+
+
+<body>
+
+
+<div id="topBar" class="container-fluid fixed-top">  
+    <div class="row">
+        <h3 id="siteName" class="TopBarElem col-sm-2 text-center">The Artchive</h3>
+        <div class="TopBarElem col-sm-1">
+            <button class="TopBarElem btn-primary" onclick="gotoMainPage()">Back to main</button>
+        </div>
+
+        <!-- Search bar: definitely most complicated part -->
+        <form id="searchWrapper" class="TopBarElem form-group col-sm-6 container-fluid">
+            <div class="row">
+                <input id="searchBar" type="search" class="TopBarElem col-sm-11" placeholder="Search">
+                <div class="dropdown col-sm-1">
+                    <button id="filterButton" class="TopBarElem btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
+                    <div id="filterMenu" class="dropdown-menu container-fluid" aria-labelledby="filterDropdown">
+                        <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <h5 class="col-sm-3">Tags:</h5>
+                            <input class="col-sm-7"></input>
+                            <div class="col-sm-1"></div>
+                        </div>
+                        <!-- <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <button class="btn-light col-sm-10">Copy tags</button>
+                            <div class="col-sm-1"></div>
+                        </div> -->
+                        <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <h5 class="col-sm-3">Creator(s):</h5>
+                            <input class="col-sm-7"></input>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- End of search bar -->
+        <div class="TopBarElem col-sm-3 text-center">
+            <button id="listsButton" class="TopBarElem btn-primary">Lists</button>
+            <button id="loginProfileButton" class="TopBarElem btn-primary">Log in</button>
+        </div>
+    </div>
+</div>
+<div id="bodyDiv">
+    <div class="form-group">
+      <label for="creators">Creators</label>
+      <input type="creatorname" class="form-control" id="creatorname" placeholder="Enter creator name">
+    </div>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="title" class="form-control" id="title" placeholder="Enter the title">
+    </div>
+    <div class="form-group">
+        <label for="tag">Tag</label>
+        <input type="tag" class="form-control" id="tag" placeholder="Enter the tags">
+      </div>
+    <button  type="addToWork" class="btn btn-primary" onclick= "sendData()" >addToWork!</button>
+</div>
+
+
+        
+   
+
+    

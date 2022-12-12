@@ -197,6 +197,13 @@ Format:
 #### /users/{user}/lists/{listName}
 Creates a list named {listName} attached to {user}. Returns an object with the list ID.
 
+#### /tags
+Creates a new tag with the given name. Query paramaters are:
+- tagName - string - Indicates the name of the tag to be created. 
+
+#### /creators
+Creates a new creator with the given name. Query parameters are:
+- creator - string - Indicates the name of the creator to be added to the database.
 
 ## PUT
 
