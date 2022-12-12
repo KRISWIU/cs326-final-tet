@@ -40,3 +40,26 @@ artwork_img_ele.src = artwork_img;
 artwork_creator_ele.innerHTML = "Creator: "+artwork_creator;
 artwork_links_ele.innerHTML = artwork_links;
 artwork_tag_ele.innerHTML = "Tags: "+artwork_tag_str;
+
+const artwork_add_tag_ele = document.getElementById("art_add_tag").innerHTML;
+const artwork_add_tag_b = document.getElementById("art_add_tag_b");
+const artwork_de_tag_ele = document.getElementById("art_de_tag").innerHTML;
+const artwork_de_tag_b = document.getElementById("art_de_tag_b");
+const artwork_add_list_ele = document.getElementById("art_add_list").innerHTML;
+const artwork_add_list_b = document.getElementById("art_add_list_b");
+
+artwork_add_tag_b.addEventListener("click", async ()=>{
+    const add_tag_url = "artwork/"+artworkID+"?key=tag&type=push&value="+artwork_add_tag_ele;
+    await makeRequest(add_tag_url,"PUT")
+});
+
+artwork_de_tag_b.addEventListener("click", async ()=>{
+    const de_tag_url = "artwork/"+artworkID+"?key=tag&type=pull&value="+artwork_add_tag_ele;
+    await makeRequest(de_tag_url,"PUT")
+});
+
+artwork_add_list_b.addEventListener("click", async ()=>{
+    const userName = document.getElementById("loginProfileButton").innerHTML;
+    const add_list_url = "users/"+userName+"/lists/"+artwork_add_list_ele+"?add=false&artwork="+artworkID;
+    await makeRequest(add_list_url,"PUT")
+});
