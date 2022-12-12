@@ -80,22 +80,29 @@ These are all just guesses, but I feel like I've written 250 to 500 lines of cod
 
 ### MacNian (Yuxiang Nian)
 I just followed Jacob's idea and do some basic work.
+
 #### HTML:
 - addPages.html
 - login.html 
 - Searchresult.html
 
 #### CSS:
+
 -I changed some element sizes in main.css for index.html.
+
 -I changed the outlook of the login page.
 
 #### Js:
 -Wrote and implement the addpage.js
+
 -Adding code for goToPage.js
+
 -Adding some listener for combing the signup page, login page, main page and addtowork page
 
 # Additional Information
+
 This project is amazing and I learnt a lot from that.
+
 # Conclusion
 
 As a team, we found the project very challenging overall, perhaps as evidenced by the amount of features we could still implement, but overall, it was very educational. We were surprising by the amount of freedom we had regarding certain design decisions (such as the API) and have started to come to see why certain things are set up the way they are. The most challening aspect was by far the client-side code that we had to do, given that there's a lot to improve about it and it has to be error-resistant since the end-user is facing it.
