@@ -1,5 +1,7 @@
 const { json } = require('express');
 const express = require('express');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const { MongoClient, ObjectId, ListCollectionsCursor } = require('mongodb');
 
 // Start up server
@@ -40,6 +42,20 @@ async function disconnectFromDatabase(dbClient) {
 console.log("Server about to serve basic pages.");
 app.use(express.static('src'))
 console.log("Server has served basic pages.");
+
+//  ###  Authentication related  ###  \\
+
+function checkLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+	// If we are authenticated, run the next route.
+	next();
+    } else {
+	// Otherwise, redirect to the login page.
+	res.redirect('/login');
+    }
+}
+
+
 
 
 //  ###  GET  ###  \\
@@ -160,6 +176,23 @@ app.get("/tags/:tagName", async (req, res) => {
         res.json({error: "The requested tag could not be found."});
     } else {
         console.log("Successfully retrieved tag object. Tag id is: " + JSON.stringify(queryResult));
+        res.json(queryResult);
+    }
+    await disconnectFromDatabase(client);
+    res.end();
+});
+
+// Returns the tagname, given the tag ID.
+app.get("/tags/id/:tagId", async (req, res) => {
+    console.log("GET /tags/id/:tagId called on " + req.params.tagId + ".");
+    const client = await connectToDatabase();
+    const tagsDB = client.db("database1").collection("tags");
+    queryResult = await tagsDB.findOne({id: {$eq: req.params.tagId}});
+    if (queryResult === null) {
+        console.log("Requested tag not found.");
+        res.json({error: "The requested tag could not be found."});
+    } else {
+        console.log("Successfully retrieved tag object. Tag database object is: " + JSON.stringify(queryResult));
         res.json(queryResult);
     }
     await disconnectFromDatabase(client);
