@@ -7,7 +7,7 @@
 Broadly speaking, our application is meant to be a database of artworks which users can manage in lists and organize. In comparison to sites like MyAnimeList or Goodreads, which are focused on a specific medium, our site allows arbitrary artworks to be added and managed, as well as tags to be created and applied at will (at least in theory.)
 
 # Team members
-**PineVoid** - **Jacob Gray**
+**PineVoid** - **Jacob Gray**  **Zhenduo Wang**
 
 # User interface
 
@@ -60,7 +60,48 @@ These are all just guesses, but I feel like I've written 250 to 500 lines of cod
 - Created and initially pushed the site to the Heroku app.
 - Created the MongoDB Atlas database for the site.
 
+### PineVoid (Zhenduo Wang)
+
+##### HTML: 
+- some part of the index.html
+- artwork.html for showing the search result
+- listPage.html for showing user's lists
+
+##### CSS: 
+- Wrote some part of the styling
+
+##### JS (client-side):
+- artwork.js for supporting the artwork.html
+- main_listPage.js for supporting the listPage.html
+- some part of the event listener for other pages
+
+##### Other:
+- some part of proposal.md and some part of milestone2.md
+
+### MacNian (Yuxiang Nian)
+I just followed Jacob's idea and do some basic work.
+
+#### HTML:
+- addPages.html
+- login.html 
+- Searchresult.html
+
+#### CSS:
+
+-I changed some element sizes in main.css for index.html.
+
+-I changed the outlook of the login page.
+
+#### Js:
+-Wrote and implement the addpage.js
+
+-Adding code for goToPage.js
+
+-Adding some listener for combing the signup page, login page, main page and addtowork page
+
 # Additional Information
+
+This project is amazing and I learnt a lot from that.
 
 # Conclusion
 

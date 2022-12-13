@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The Artchive</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Don't really know too much about the details, but needs these lines to use bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="main.css"> <!-- Our style sheet -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="main.js"></script>
+    <script src="gotoPages.js"></script>
+    <script type="module" src="main_listPage.js"></script>
+</head>
+
+
+<body>
+
+
+<div id="topBar" class="container-fluid fixed-top">  
+    <div class="row align-items-center">
+        <button id="siteName" class="TopBarElem col-sm-2 text-center">The Artchive</button>
+        <div class="TopBarElem col-sm-1">
+            <button id="addWork" class="TopBarElem btn-primary" onclick="gotoAddWork()">Add works</button>
+        </div>
+
+        <!-- Search bar: definitely most complicated part -->
+        <form id="searchWrapper" class="TopBarElem form-group col-sm-6 container-fluid">
+            <div class="row">
+                <input id="searchBar" type="search" class="TopBarElem col-sm-11" placeholder="Search">
+                <div class="dropdown col-sm-1">
+                    <button id="filterButton" class="TopBarElem btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</button>
+                    <div id="filterMenu" class="dropdown-menu container-fluid" aria-labelledby="filterDropdown">
+                        <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <h5 class="col-sm-3">Tags:</h5>
+                            <input id="tags" class="col-sm-7"></input>
+                            <div class="col-sm-1"></div>
+                        </div>
+                        <!-- <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <button class="btn-light col-sm-10">Copy tags</button>
+                            <div class="col-sm-1"></div>
+                        </div> -->
+                        <div class="dropdown-item row">
+                            <div class="col-sm-1"></div>
+                            <h5 class="col-sm-3">Creator(s):</h5>
+                            <input id="creators" class="col-sm-7"></input>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- End of search bar -->
+        <div class="TopBarElem col-sm-3 text-center">
+            <button id="listsButton" class="TopBarElem btn-primary">Lists</button>
+            <input type = "button" id="loginProfileButton" class="TopBarElem btn-primary" value = "test" onclick="gotoLogIn()">
+        </div>
+    </div>
+</div>
+
+
+<!-- End of navBar: start of body -->
+<div id="bodyDiv">
+
+<div class="container-fluid"></div>
+    <!-- Filter button -->
+    <div class="row">
+
+    </div>
+
+    <!-- Center grid -->
+    <div class="container">
+        <div class="row text-center">
+            <!-- Top row, left 3 -->
+            <div class="container col-sm-5">
+                <div id="art_list" class="row">
+                    <!-- Artwork 1,1 -->
+                </div>
+            </div>
+
+            <!-- Center div -->
+            <div class="col-sm-2"></div>
+
+            <!-- Top row, right 3 -->
+            <div class="container col-sm-5">
+                <div class="row">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div id="bottom" class="container-fluid fixed-top">
+    <p id="copyright" class="col-sm-5">@Copyright: Zhenduo Wang, Jacob Gray, Yuxiang Nian</p>
+</div>
+
+</body>
+
+</html>
